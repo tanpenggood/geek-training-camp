@@ -46,7 +46,9 @@ public class DatabaseUserRepository implements UserRepository, BaseRepository {
 
     @Override
     public boolean deleteById(Long userId) {
-        return false;
+        int deleteRow = executeUpdate("DELETE FROM users WHERE id = ?",
+                COMMON_EXCEPTION_HANDLER, userId);
+        return deleteRow == 1;
     }
 
     @Override

@@ -4,6 +4,8 @@ import com.itplh.projects.user.domain.User;
 import com.itplh.projects.user.repository.DatabaseUserRepository;
 import com.itplh.projects.user.repository.UserRepository;
 
+import java.util.Collection;
+
 /**
  * 用户服务
  */
@@ -18,7 +20,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean deregister(User user) {
-        return false;
+        return userRepository.deleteById(user.getId());
     }
 
     @Override
@@ -39,5 +41,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public User queryUserByName(String name) {
         return userRepository.getByName(name);
+    }
+
+    @Override
+    public Collection<User> queryAll() {
+        return userRepository.getAll();
     }
 }

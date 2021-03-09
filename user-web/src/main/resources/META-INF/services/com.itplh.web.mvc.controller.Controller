@@ -1,3 +1,4 @@
 com.itplh.projects.user.web.controller.HelloWorldController
 com.itplh.projects.user.web.controller.UserController
+com.itplh.projects.user.web.controller.UserRestController
 com.itplh.projects.user.web.controller.JndiController

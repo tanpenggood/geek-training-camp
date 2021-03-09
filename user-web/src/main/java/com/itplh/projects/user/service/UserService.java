@@ -2,6 +2,8 @@ package com.itplh.projects.user.service;
 
 import com.itplh.projects.user.domain.User;
 
+import java.util.Collection;
+
 /**
  * 用户服务
  */
@@ -36,4 +38,6 @@ public interface UserService {
     User queryUserByNameAndPassword(String name, String password);
 
     User queryUserByName(String name);
+
+    Collection<User> queryAll();
 }
