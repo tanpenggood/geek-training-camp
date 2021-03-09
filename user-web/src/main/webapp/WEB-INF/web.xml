@@ -5,8 +5,22 @@
          http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
          metadata-complete="false" version="2.5">
 
+    <!--
+    如何控制Listener的执行顺序？
+    Listener按照xml配置的顺序进行加载执行
+    -->
+
+    <!-- 请确保这个 Listener 放置在首位 -->
+    <listener>
+        <listener-class>com.itplh.projects.user.web.listener.ComponentContextInitializerListener</listener-class>
+    </listener>
+
     <listener>
         <listener-class>com.itplh.projects.user.web.listener.DBConnectionInitializerListener</listener-class>
+    </listener>
+
+    <listener>
+        <listener-class>com.itplh.projects.user.web.listener.TestingListener</listener-class>
     </listener>
 
     <servlet>

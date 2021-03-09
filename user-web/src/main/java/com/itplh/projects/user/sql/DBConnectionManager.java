@@ -1,10 +1,17 @@
 package com.itplh.projects.user.sql;
 
 
+import com.itplh.projects.user.context.ComponentContext;
+
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class DBConnectionManager {
+
+    private Logger logger = Logger.getLogger(this.getClass().getName());
 
     public static final String DROP_USERS_TABLE_DDL_SQL = "DROP TABLE users";
 
@@ -26,6 +33,20 @@ public class DBConnectionManager {
     }
 
     public Connection getConnection() {
+        //  依赖查找
+        DataSource dataSource = ComponentContext.getInstance().getComponent("jdbc/UserPlatformDB");
+        Connection connection = null;
+        try {
+            connection = dataSource.getConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            logger.log(Level.SEVERE, e.getMessage(), e);
+        }
+        if (connection != null) {
+            logger.log(Level.INFO, "获取 JNDI 数据库连接成功！");
+            System.out.println("获取 JNDI 数据库连接成功！");
+            this.connection = connection;
+        }
         return this.connection;
     }
 
