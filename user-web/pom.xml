@@ -3,20 +3,21 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>com.itplh.projects</artifactId>
-        <groupId>geek-training-camp</groupId>
+        <groupId>com.itplh.projects</groupId>
+        <artifactId>geek-training-camp</artifactId>
         <version>${revision}</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>user-web</artifactId>
-    <name>User Web Application ${revision}</name>
+    <name>user-web ${revision}</name>
+    <description>User Web Application ${revision}</description>
     <packaging>war</packaging>
 
     <dependencies>
         <dependency>
-            <groupId>geek-training-camp</groupId>
+            <groupId>com.itplh.projects</groupId>
             <artifactId>my-web-mvc</artifactId>
             <version>${revision}</version>
         </dependency>
@@ -50,11 +51,6 @@
                     <charset>UTF-8</charset>
                     <!-- 开启JNDI -->
                     <enableNaming>true</enableNaming>
-                    <!-- 指定自定义的context.xml位置 -->
-                    <mode>context</mode>
-                    <contextFile>src/main/tomcatconf/context.xml</contextFile>
-                    <contextReloadable>true</contextReloadable>
-                    <backgroundProcessorDelay>5</backgroundProcessorDelay>
                 </configuration>
                 <dependencies>
                     <dependency>

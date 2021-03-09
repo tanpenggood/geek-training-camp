@@ -8,7 +8,6 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import javax.servlet.annotation.WebListener;
 import javax.sql.DataSource;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -18,7 +17,6 @@ import java.util.logging.Logger;
 import static com.itplh.projects.user.sql.DBConnectionManager.CREATE_USERS_TABLE_DDL_SQL;
 import static com.itplh.projects.user.sql.DBConnectionManager.DROP_USERS_TABLE_DDL_SQL;
 
-@WebListener
 public class DBConnectionInitializerListener implements ServletContextListener {
 
     private Logger logger = Logger.getLogger(this.getClass().getName());

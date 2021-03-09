@@ -3,15 +3,16 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>com.itplh.projects</artifactId>
-        <groupId>geek-training-camp</groupId>
+        <groupId>com.itplh.projects</groupId>
+        <artifactId>geek-training-camp</artifactId>
         <version>${revision}</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>my-web-mvc</artifactId>
-    <name>My Web-MVC Framework ${revision}</name>
+    <name>my-web-mvc ${revision}</name>
+    <description>My Web-MVC Framework ${revision}</description>
 
     <dependencies>
         <!-- Servlet API -->
@@ -36,5 +37,9 @@
             <artifactId>fastjson</artifactId>
         </dependency>
     </dependencies>
+
+    <build>
+
+    </build>
 
 </project>

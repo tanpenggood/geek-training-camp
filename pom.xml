@@ -4,15 +4,16 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>geek-training-camp</groupId>
-    <artifactId>com.itplh.projects</artifactId>
+    <groupId>com.itplh.projects</groupId>
+    <artifactId>geek-training-camp</artifactId>
     <version>${revision}</version>
     <modules>
         <module>my-web-mvc</module>
         <module>user-web</module>
     </modules>
     <packaging>pom</packaging>
-    <name>Geek Training Camp ${revision}</name>
+    <name>geek-training-camp ${revision}</name>
+    <description>Geek Training Camp ${revision}</description>
 
     <properties>
         <revision>v1-SNAPSHOT</revision>
