@@ -31,6 +31,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.ServiceLoader;
 import java.util.Set;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -239,13 +240,17 @@ public class FrontControllerServlet extends HttpServlet {
                             // 反射调用setXXX赋值 这里面还可以加料进行参数的验证
                             for (Map.Entry<String, String[]> parameterEntry : parameterMap.entrySet()) {
                                 Method setMethod = writeMethodMap.get(parameterEntry.getKey());
-                                if (Objects.nonNull(setMethod)) {
+                                // 是否满足调用setXXX方法 1.有符合名字的set方法 2.该set方法只有一个参数 3.该set方法的入参类型为String
+                                boolean isInvokeWriteMethod = Objects.nonNull(setMethod)
+                                        && setMethod.getParameterCount() == 1
+                                        && Objects.equals(String.class, setMethod.getParameterTypes()[0]);
+                                if (isInvokeWriteMethod) {
                                     String parameterValue = stringCharsetConvert(parameterEntry.getValue()[0]).get();
                                     setMethod.invoke(entity, parameterValue);
                                 }
                             }
                         } catch (Exception e) {
-                            e.printStackTrace();
+                            logger.log(Level.SEVERE, e.getMessage(), e);
                         }
                         methodParams.add(entity);
                     });
