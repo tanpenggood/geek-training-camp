@@ -296,7 +296,7 @@ public class FrontControllerServlet extends HttpServlet {
                 violationResultMap.forEach((k, v) -> System.out.println(k + v));
                 throw new InvalidParameterException(violationResultMap.toString());
             } else {
-                logger.info("bean validator");
+                logger.info("bean validate success");
             }
         }
     }
