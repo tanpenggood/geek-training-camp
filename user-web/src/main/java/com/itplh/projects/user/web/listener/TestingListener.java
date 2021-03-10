@@ -1,13 +1,9 @@
 package com.itplh.projects.user.web.listener;
 
-import com.itplh.projects.user.domain.User;
 import com.itplh.projects.user.orm.jpa.JpaDemo;
 import com.itplh.projects.user.sql.DBConnectionManager;
 import com.itplh.projects.user.sql.DBConnectionManagerFactory;
-import com.itplh.web.context.ComponentContext;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import java.util.logging.Logger;

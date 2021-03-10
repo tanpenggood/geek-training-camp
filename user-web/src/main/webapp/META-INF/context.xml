@@ -37,30 +37,30 @@
               type="com.itplh.projects.user.orm.jpa.DelegatingEntityManager"
               persistenceUnitName="emf"
               propertiesLocation="META-INF/jpa-datasource.properties"
-              factory="org.apache.naming.factory.BeanFactory" />
+              factory="org.apache.naming.factory.BeanFactory"/>
 
     <Resource name="bean/Validator" auth="Container"
               type="com.itplh.projects.user.validator.bean.validation.DelegatingValidator"
-              factory="org.apache.naming.factory.BeanFactory" />
+              factory="org.apache.naming.factory.BeanFactory"/>
 
     <Resource name="bean/DatabaseUserRepository" auth="Container"
               type="com.itplh.projects.user.repository.DatabaseUserRepository"
-              factory="org.apache.naming.factory.BeanFactory" />
+              factory="org.apache.naming.factory.BeanFactory"/>
 
     <Resource name="bean/JpaUserRepository" auth="Container"
               type="com.itplh.projects.user.repository.JpaUserRepository"
-              factory="org.apache.naming.factory.BeanFactory" />
+              factory="org.apache.naming.factory.BeanFactory"/>
 
     <Resource name="bean/UserService" auth="Container"
               type="com.itplh.projects.user.service.UserServiceImpl"
-              factory="org.apache.naming.factory.BeanFactory" />
+              factory="org.apache.naming.factory.BeanFactory"/>
 
     <Resource name="bean/UserController" auth="Container"
               type="com.itplh.projects.user.web.controller.UserController"
-              factory="org.apache.naming.factory.BeanFactory" />
+              factory="org.apache.naming.factory.BeanFactory"/>
 
     <Resource name="bean/UserRestController" auth="Container"
               type="com.itplh.projects.user.web.controller.UserRestController"
-              factory="org.apache.naming.factory.BeanFactory" />
+              factory="org.apache.naming.factory.BeanFactory"/>
 
 </Context>

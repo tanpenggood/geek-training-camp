@@ -1,8 +1,6 @@
 package com.itplh.projects.user.service;
 
 import com.itplh.projects.user.domain.User;
-import com.itplh.projects.user.repository.DatabaseUserRepository;
-import com.itplh.projects.user.repository.JpaUserRepository;
 import com.itplh.projects.user.repository.UserRepository;
 
 import javax.annotation.Resource;

@@ -214,12 +214,12 @@ public class ComponentContext {
                 });
     }
 
-        /**
-         * PostConstruct回调阶段 - {@link PostConstruct}
-         *
-         * @param component
-         * @param componentClass
-         */
+    /**
+     * PostConstruct回调阶段 - {@link PostConstruct}
+     *
+     * @param component
+     * @param componentClass
+     */
     private void processPostConstruct(Object component, Class<?> componentClass) {
         List<Method> collect = new ArrayList<>();
         for (Method method : componentClass.getDeclaredMethods()) {
