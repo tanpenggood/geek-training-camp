@@ -9,7 +9,6 @@ import com.itplh.web.mvc.controller.PageController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Path;
-import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 import java.util.logging.Logger;
 
@@ -30,12 +29,11 @@ public class UserController implements PageController {
     }
 
     @Path("/register")
-    public String register(HttpServletRequest request, HttpServletResponse response) {
-        User user = new User();
-        stringCharsetConvert(request.getParameter("name")).ifPresent(user::setName);
-        stringCharsetConvert(request.getParameter("password")).ifPresent(user::setPassword);
-        stringCharsetConvert(request.getParameter("email")).ifPresent(user::setEmail);
-        stringCharsetConvert(request.getParameter("phoneNumber")).ifPresent(user::setPhoneNumber);
+    public String register(HttpServletRequest request, HttpServletResponse response, User user) {
+        if (user == null) {
+            logger.warning(String.format("user is required."));
+            return "redirect:register-fail";
+        }
 
         // 重复性校验
         User dbUser = userService.queryUserByName(user.getName());
