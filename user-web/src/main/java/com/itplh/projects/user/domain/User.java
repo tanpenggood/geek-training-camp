@@ -1,11 +1,17 @@
 package com.itplh.projects.user.domain;
 
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Pattern;
 import java.util.Objects;
 
 /**
@@ -17,19 +23,27 @@ import java.util.Objects;
 @Table(name = "users")
 public class User {
 
+    @Min(1)
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Column
+    @NotBlank
     private String name;
 
+    @NotBlank
+    @Length(min = 6, max = 32)
     @Column
     private String password;
 
+    @NotBlank
+    @Email
     @Column
     private String email;
 
+    @NotBlank
+    @Pattern(regexp = "1[3-9]\\d{9}")
     @Column
     private String phoneNumber;
 

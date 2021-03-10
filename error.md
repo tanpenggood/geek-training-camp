@@ -67,3 +67,36 @@ Caused by: javax.persistence.PersistenceException: Unrecognized persistence.xml 
     </persistence-unit>
 </persistence>
 ```
+
+## javax.validation.ValidationException
+
+Unable to load 'javax.el.ExpressionFactory'. Check that you have the EL dependencies on the classpath
+
+```java
+三月 10, 2021 5:53:23 下午 org.hibernate.validator.internal.util.Version <clinit>
+INFO: HV000001: Hibernate Validator 5.1.0.Final
+Exception in thread "main" javax.validation.ValidationException: Unable to instantiate Configuration.
+	at javax.validation.Validation$GenericBootstrapImpl.configure(Validation.java:279)
+	at javax.validation.Validation.buildDefaultValidatorFactory(Validation.java:110)
+	at com.itplh.projects.user.validator.bean.validation.BeanValidationDemo.main(BeanValidationDemo.java:15)
+Caused by: javax.validation.ValidationException: HV000183: Unable to load 'javax.el.ExpressionFactory'. Check that you have the EL dependencies on the classpath
+	at org.hibernate.validator.messageinterpolation.ResourceBundleMessageInterpolator.<init>(ResourceBundleMessageInterpolator.java:172)
+	at org.hibernate.validator.messageinterpolation.ResourceBundleMessageInterpolator.<init>(ResourceBundleMessageInterpolator.java:118)
+	at org.hibernate.validator.internal.engine.ConfigurationImpl.<init>(ConfigurationImpl.java:110)
+	at org.hibernate.validator.internal.engine.ConfigurationImpl.<init>(ConfigurationImpl.java:86)
+	at org.hibernate.validator.HibernateValidator.createGenericConfiguration(HibernateValidator.java:41)
+	at javax.validation.Validation$GenericBootstrapImpl.configure(Validation.java:276)
+	... 2 more
+```
+
+**解决方案**
+
+引入依赖
+
+```xml
+<dependency>
+    <groupId>org.glassfish</groupId>
+    <artifactId>javax.el</artifactId>
+    <version>3.0.1-b11</version>
+</dependency>
+```
