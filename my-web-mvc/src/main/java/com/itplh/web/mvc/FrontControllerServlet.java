@@ -81,21 +81,21 @@ public class FrontControllerServlet extends HttpServlet {
             List<Method> publicMethods = getPublicMethods(controllerClass, Object.class);
             // 处理方法支持的 HTTP 方法集合
             for (Method method : publicMethods) {
-                Set<String> supportedHttpMethods = findSupportedHttpMethods(method);
                 Path pathFromMethod = method.getAnnotation(Path.class);
-                String completeRequestPath = requestPathByClass;
-                if (pathFromMethod != null) {
+                // 只有被Path注解标记的public方法才视为handle方法
+                boolean isHandle = pathFromMethod != null;
+                if (isHandle) {
+                    Set<String> supportedHttpMethods = findSupportedHttpMethods(method);
+                    String completeRequestPath = requestPathByClass;
                     completeRequestPath += pathFromMethod.value();
+                    handleMethodInfoMapping.put(completeRequestPath,
+                            new HandlerMethodInfo(completeRequestPath, method, supportedHttpMethods));
+                    controllersMapping.put(completeRequestPath, controller);
                 }
-                handleMethodInfoMapping.put(completeRequestPath,
-                        new HandlerMethodInfo(completeRequestPath, method, supportedHttpMethods));
-                controllersMapping.put(completeRequestPath, controller);
             }
         }
-        logger.info("controllersMapping---------------------------------");
-        controllersMapping.forEach((k, v) -> logger.info(String.format("%s %s", k, v)));
-        logger.info("handleMethodInfoMapping----------------------------");
-        handleMethodInfoMapping.forEach((k, v) -> logger.info(String.format("%s %s", k, v.getHandlerMethod().getName())));
+        logger.info("all path----------------------------");
+        handleMethodInfoMapping.keySet().forEach(path -> System.out.println("http://localhost:8080" + path));
     }
 
     /**
@@ -162,7 +162,8 @@ public class FrontControllerServlet extends HttpServlet {
                     try {
                         methodParams = buildMethodParams(handlerMethodInfo.getHandlerMethod(), request, response);
                     } catch (InvalidParameterException e) {
-                        // bean validate fail
+                        // bean validate fail, http status return 400
+                        logger.warning(e.getMessage());
                         response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                         return;
                     }
@@ -236,8 +237,8 @@ public class FrontControllerServlet extends HttpServlet {
     private Object[] buildMethodParams(Method handlerMethod, HttpServletRequest request, HttpServletResponse response) throws InvalidParameterException {
         List methodParams = new ArrayList(Arrays.asList(request, response));
         Map<String, String[]> parameterMap = request.getParameterMap();
-        // 满足为请求参数构建实体的条件 1.有请求参数 2.handle方法有相应实体接收参数
-        boolean buildRequestParameterEntity = handlerMethod.getParameterCount() > 2 && !parameterMap.isEmpty();
+        // 满足为请求参数构建实体的条件 1.handle方法有相应实体接收参数
+        boolean buildRequestParameterEntity = handlerMethod.getParameterCount() > 2;
         if (buildRequestParameterEntity) {
             Arrays.stream(handlerMethod.getParameters())
                     // 跳过request response参数
@@ -247,20 +248,23 @@ public class FrontControllerServlet extends HttpServlet {
                         Class methodParamClass = methodParam.getType();
                         try {
                             entity = methodParamClass.newInstance();
-                            // 读取bean属性与setXXX方法映射关系
-                            HashMap<String, Method> writeMethodMap = new HashMap<>();
-                            Arrays.stream(Introspector.getBeanInfo(methodParamClass, Object.class).getPropertyDescriptors())
-                                    .forEach(propertyDescriptor -> writeMethodMap.put(propertyDescriptor.getName(), propertyDescriptor.getWriteMethod()));
-                            // 反射调用setXXX赋值 这里面还可以加料进行参数的验证
-                            for (Map.Entry<String, String[]> parameterEntry : parameterMap.entrySet()) {
-                                Method setMethod = writeMethodMap.get(parameterEntry.getKey());
-                                // 是否满足调用setXXX方法 1.有符合名字的set方法 2.该set方法只有一个参数 3.该set方法的入参类型为String
-                                boolean isInvokeWriteMethod = Objects.nonNull(setMethod)
-                                        && setMethod.getParameterCount() == 1
-                                        && Objects.equals(String.class, setMethod.getParameterTypes()[0]);
-                                if (isInvokeWriteMethod) {
-                                    String parameterValue = stringCharsetConvert(parameterEntry.getValue()[0]).get();
-                                    setMethod.invoke(entity, parameterValue);
+                            // 请求参数不为空则查找对应实体字段为其赋值
+                            if (!parameterMap.isEmpty()) {
+                                // 读取bean属性与setXXX方法映射关系
+                                HashMap<String, Method> writeMethodMap = new HashMap<>();
+                                Arrays.stream(Introspector.getBeanInfo(methodParamClass, Object.class).getPropertyDescriptors())
+                                        .forEach(propertyDescriptor -> writeMethodMap.put(propertyDescriptor.getName(), propertyDescriptor.getWriteMethod()));
+                                // 反射调用setXXX赋值
+                                for (Map.Entry<String, String[]> parameterEntry : parameterMap.entrySet()) {
+                                    Method setMethod = writeMethodMap.get(parameterEntry.getKey());
+                                    // 是否满足调用setXXX方法 1.有符合名字的set方法 2.该set方法只有一个参数 3.该set方法的入参类型为String
+                                    boolean isInvokeWriteMethod = Objects.nonNull(setMethod)
+                                            && setMethod.getParameterCount() == 1
+                                            && Objects.equals(String.class, setMethod.getParameterTypes()[0]);
+                                    if (isInvokeWriteMethod) {
+                                        String parameterValue = stringCharsetConvert(parameterEntry.getValue()[0]).get();
+                                        setMethod.invoke(entity, parameterValue);
+                                    }
                                 }
                             }
                         } catch (Exception e) {
@@ -293,7 +297,6 @@ public class FrontControllerServlet extends HttpServlet {
                 for (ConstraintViolation<Object> violation : violations) {
                     violationResultMap.put(violation.getPropertyPath(), violation.getMessage());
                 }
-                violationResultMap.forEach((k, v) -> System.out.println(k + v));
                 throw new InvalidParameterException(violationResultMap.toString());
             } else {
                 logger.info("bean validate success");
