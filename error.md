@@ -29,7 +29,7 @@ org.apache.tomcat.util.bcel.classfile.ClassFormatException: Invalid byte tag in 
 
 **解决方案**
 
-hibernate-core 高版本中语法不兼容，故降低版本号为 5.1.0.Final
+tomcat7 不能识别高版本 hibernate-core 中的JAVA语法，故降低版本号为 5.1.0.Final
 
 ## javax.persistence.PersistenceException
 
