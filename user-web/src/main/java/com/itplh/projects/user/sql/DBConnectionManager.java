@@ -1,8 +1,7 @@
 package com.itplh.projects.user.sql;
 
 
-import com.itplh.projects.user.context.ComponentContext;
-
+import javax.annotation.Resource;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -23,6 +22,9 @@ public class DBConnectionManager {
             "phoneNumber VARCHAR(64) NOT NULL" +
             ")";
 
+    @Resource(name = "jdbc/UserPlatformDB")
+    private DataSource dataSource;
+
     private Connection connection;
 
     public DBConnectionManager() {
@@ -33,9 +35,6 @@ public class DBConnectionManager {
     }
 
     public Connection getConnection() {
-        //  依赖查找
-        DataSource dataSource = ComponentContext.getInstance().getComponent("jdbc/UserPlatformDB");
-        Connection connection = null;
         try {
             connection = dataSource.getConnection();
         } catch (SQLException e) {

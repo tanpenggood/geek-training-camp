@@ -1,7 +1,7 @@
 package com.itplh.projects.user.web.listener;
 
-import com.itplh.projects.user.context.ComponentContext;
 import com.itplh.projects.user.sql.DBConnectionManager;
+import com.itplh.web.context.ComponentContext;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;

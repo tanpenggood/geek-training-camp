@@ -1,6 +1,6 @@
-package com.itplh.projects.user.web.listener;
+package com.itplh.web.context.listener;
 
-import com.itplh.projects.user.context.ComponentContext;
+import com.itplh.web.context.ComponentContext;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
@@ -24,7 +24,6 @@ public class ComponentContextInitializerListener implements ServletContextListen
 
     @Override
     public void contextDestroyed(ServletContextEvent servletContextEvent) {
-        ComponentContext.getInstance().destroy();
     }
 
 }
