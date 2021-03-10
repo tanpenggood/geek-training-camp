@@ -93,7 +93,7 @@ public class FrontControllerServlet extends HttpServlet {
                             new HandlerMethodInfo(completeRequestPath, method, supportedHttpMethods));
                     // 使用Component容器中的对象替换ServiceLoader加载的对象（ServiceLoader加载的对象依赖注入的Component为null）
                     controller = Optional.ofNullable(ComponentContext.getInstance().getComponent(controllerClass))
-                            .map(c -> (Controller) c)
+                            .map(Controller.class::cast)
                             .orElse(controller);
                     controllersMapping.put(completeRequestPath, controller);
                 }
@@ -293,9 +293,13 @@ public class FrontControllerServlet extends HttpServlet {
      */
     private void beanValidatorIfNecessary(Parameter methodParam, Object entity) throws InvalidParameterException {
         if (methodParam.isAnnotationPresent(Valid.class)) {
-            ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-            // cache the factory somewhere
-            Validator validator = factory.getValidator();
+            Validator validator = Optional.ofNullable(ComponentContext.getInstance().getComponent("bean/Validator"))
+                    .map(Validator.class::cast)
+                    .orElseGet(() -> {
+                        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+                        // cache the factory somewhere
+                        return factory.getValidator();
+                    });
             Set<ConstraintViolation<Object>> violations = validator.validate(entity);
             if (!violations.isEmpty()) {
                 Map<javax.validation.Path, String> violationResultMap = new HashMap<>();
