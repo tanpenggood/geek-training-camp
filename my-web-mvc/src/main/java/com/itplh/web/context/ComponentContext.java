@@ -47,7 +47,17 @@ public class ComponentContext {
 
     private ClassLoader classLoader;
 
+    /**
+     * K JNDI name
+     * V class instance
+     */
     private Map<String, Object> componentsMap = new LinkedHashMap<>();
+
+    /**
+     * K class name
+     * V class instance
+     */
+    private Map<String, Object> classNameMap = new LinkedHashMap<>();
 
     /**
      * 请注意
@@ -74,6 +84,17 @@ public class ComponentContext {
      */
     public <C> C getComponent(String name) {
         return (C) componentsMap.get(name);
+    }
+
+    /**
+     * 通过类名进行依赖查找
+     *
+     * @param clazz clazz
+     * @param <C>
+     * @return
+     */
+    public <C> C getComponent(Class clazz) {
+        return (C) classNameMap.get(clazz.getName());
     }
 
     /**
@@ -128,7 +149,11 @@ public class ComponentContext {
         // 遍历获取所有的组件名称
         List<String> componentNames = listAllComponentNames();
         // 通过依赖查找，实例化对象（ Tomcat BeanFactory setter 方法的执行，仅支持简单类型）
-        componentNames.forEach(name -> componentsMap.put(name, lookupComponent(name)));
+        componentNames.forEach(name -> {
+            Object component = lookupComponent(name);
+            componentsMap.put(name, component);
+            classNameMap.put(component.getClass().getName(), component);
+        });
     }
 
     /**

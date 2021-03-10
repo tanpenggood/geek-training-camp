@@ -23,7 +23,7 @@ public class DBConnectionManagerFactory {
      * @return
      */
     public DBConnectionManager getDBConnectionManager() {
-        return ComponentContext.getInstance().getComponent("bean/DBConnectionManager");
+        return ComponentContext.getInstance().getComponent(DBConnectionManager.class);
     }
 
 }
