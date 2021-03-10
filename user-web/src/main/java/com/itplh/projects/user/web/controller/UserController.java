@@ -8,6 +8,7 @@ import com.itplh.web.mvc.controller.PageController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import javax.ws.rs.Path;
 import java.util.Optional;
 import java.util.logging.Logger;
@@ -29,7 +30,7 @@ public class UserController implements PageController {
     }
 
     @Path("/register")
-    public String register(HttpServletRequest request, HttpServletResponse response, User user) {
+    public String register(HttpServletRequest request, HttpServletResponse response, @Valid User user) {
         if (user == null) {
             logger.warning(String.format("user is required."));
             return "redirect:register-fail";

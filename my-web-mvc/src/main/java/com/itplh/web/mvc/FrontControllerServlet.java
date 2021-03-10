@@ -13,6 +13,11 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.ConstraintViolation;
+import javax.validation.Valid;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 import javax.ws.rs.HttpMethod;
 import javax.ws.rs.Path;
 import java.beans.Introspector;
@@ -20,7 +25,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.nio.charset.StandardCharsets;
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -151,7 +158,14 @@ public class FrontControllerServlet extends HttpServlet {
                     }
 
                     // 构建反射调用handle方法的入参 将参数从request中读出来封装到对象中去
-                    Object[] methodParams = buildMethodParams(handlerMethodInfo.getHandlerMethod(), request, response);
+                    Object[] methodParams;
+                    try {
+                        methodParams = buildMethodParams(handlerMethodInfo.getHandlerMethod(), request, response);
+                    } catch (InvalidParameterException e) {
+                        // bean validate fail
+                        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                        return;
+                    }
 
                     if (controller instanceof PageController) {
                         // 调用controller对应的方法
@@ -219,7 +233,7 @@ public class FrontControllerServlet extends HttpServlet {
      * @param response
      * @return
      */
-    private Object[] buildMethodParams(Method handlerMethod, HttpServletRequest request, HttpServletResponse response) {
+    private Object[] buildMethodParams(Method handlerMethod, HttpServletRequest request, HttpServletResponse response) throws InvalidParameterException {
         List methodParams = new ArrayList(Arrays.asList(request, response));
         Map<String, String[]> parameterMap = request.getParameterMap();
         // 满足为请求参数构建实体的条件 1.有请求参数 2.handle方法有相应实体接收参数
@@ -252,10 +266,39 @@ public class FrontControllerServlet extends HttpServlet {
                         } catch (Exception e) {
                             logger.log(Level.SEVERE, e.getMessage(), e);
                         }
+                        // bean validate
+                        beanValidatorIfNecessary(methodParam, entity);
+
                         methodParams.add(entity);
                     });
         }
         return methodParams.toArray(new Object[0]);
+    }
+
+    /**
+     * bean validate
+     *
+     * @param methodParam
+     * @param entity
+     * @throws InvalidParameterException
+     */
+    private void beanValidatorIfNecessary(Parameter methodParam, Object entity) throws InvalidParameterException {
+        if (methodParam.isAnnotationPresent(Valid.class)) {
+            ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+            // cache the factory somewhere
+            Validator validator = factory.getValidator();
+            Set<ConstraintViolation<Object>> violations = validator.validate(entity);
+            if (!violations.isEmpty()) {
+                Map<javax.validation.Path, String> violationResultMap = new HashMap<>();
+                for (ConstraintViolation<Object> violation : violations) {
+                    violationResultMap.put(violation.getPropertyPath(), violation.getMessage());
+                }
+                violationResultMap.forEach((k, v) -> System.out.println(k + v));
+                throw new InvalidParameterException(violationResultMap.toString());
+            } else {
+                logger.info("bean validator");
+            }
+        }
     }
 
     /**
