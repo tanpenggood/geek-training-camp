@@ -1,11 +1,13 @@
 package com.itplh.web.mvc;
 
 import com.alibaba.fastjson.JSON;
+import com.itplh.web.context.ComponentContext;
 import com.itplh.web.mvc.controller.Controller;
 import com.itplh.web.mvc.controller.PageController;
 import com.itplh.web.mvc.controller.RestController;
 import org.apache.commons.lang.StringUtils;
 
+import javax.annotation.Resource;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -24,7 +26,9 @@ import java.beans.Introspector;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.lang.reflect.Parameter;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidParameterException;
@@ -41,6 +45,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static java.util.Arrays.asList;
 import static org.apache.commons.lang.StringUtils.substringAfter;
@@ -90,6 +95,28 @@ public class FrontControllerServlet extends HttpServlet {
                     completeRequestPath += pathFromMethod.value();
                     handleMethodInfoMapping.put(completeRequestPath,
                             new HandlerMethodInfo(completeRequestPath, method, supportedHttpMethods));
+
+                    Stream.of(controllerClass.getDeclaredFields())
+                            .filter(field -> {
+                                // default-0 public-1 private-2 protected-4 static-8 final-16
+                                // 过滤满足注入的属性
+                                return !Modifier.isStatic(field.getModifiers()) // 非static属性
+                                        && field.isAnnotationPresent(Resource.class); // 属性被Resource标记
+                            })
+                            .forEach(field -> {
+                                Resource resource = field.getAnnotation(Resource.class);
+                                String resourceName = resource.name();
+                                Object injectObject = ComponentContext.getInstance().getComponent(resourceName);
+                                try {
+                                    field.setAccessible(true);
+                                    // 注入目标对象
+                                    field.set(controller, injectObject);
+                                    field.setAccessible(false);
+                                } catch (IllegalAccessException e) {
+                                    // ignore
+                                }
+                            });
+
                     controllersMapping.put(completeRequestPath, controller);
                 }
             }

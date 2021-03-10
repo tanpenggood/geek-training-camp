@@ -3,9 +3,9 @@ package com.itplh.projects.user.web.controller;
 
 import com.itplh.projects.user.domain.User;
 import com.itplh.projects.user.service.UserService;
-import com.itplh.projects.user.service.UserServiceImpl;
 import com.itplh.web.mvc.controller.PageController;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -22,7 +22,8 @@ public class UserController implements PageController {
 
     private Logger logger = Logger.getLogger(this.getClass().getName());
 
-    private UserService userService = new UserServiceImpl();
+    @Resource(name = "bean/UserService")
+    private UserService userService;
 
     @Path("/register-page")
     public String registerPage(HttpServletRequest request, HttpServletResponse response) {

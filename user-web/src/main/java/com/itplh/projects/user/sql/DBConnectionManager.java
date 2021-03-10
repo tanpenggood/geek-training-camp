@@ -2,6 +2,7 @@ package com.itplh.projects.user.sql;
 
 
 import javax.annotation.Resource;
+import javax.persistence.EntityManager;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -25,6 +26,9 @@ public class DBConnectionManager {
     @Resource(name = "jdbc/UserPlatformDB")
     private DataSource dataSource;
 
+    @Resource(name = "bean/EntityManager")
+    private EntityManager entityManager;
+
     private Connection connection;
 
     public DBConnectionManager() {
@@ -47,6 +51,11 @@ public class DBConnectionManager {
             this.connection = connection;
         }
         return this.connection;
+    }
+
+    public EntityManager getEntityManager() {
+        logger.info("当前 EntityManager 实现类：" + entityManager.getClass().getName());
+        return entityManager;
     }
 
     public void releaseConnection() {

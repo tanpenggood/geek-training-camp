@@ -20,6 +20,10 @@ public class JpaDemo {
     public static void main(String[] args) {
         EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("emf", getProperties());
         EntityManager entityManager = entityManagerFactory.createEntityManager();
+        testUser(entityManager);
+    }
+
+    public static void testUser(EntityManager entityManager) {
         User user = new User();
         user.setName("tanpenggood");
         user.setPassword("******");

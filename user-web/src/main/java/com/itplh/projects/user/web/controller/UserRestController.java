@@ -4,9 +4,9 @@ package com.itplh.projects.user.web.controller;
 import com.itplh.projects.user.domain.Result;
 import com.itplh.projects.user.domain.User;
 import com.itplh.projects.user.service.UserService;
-import com.itplh.projects.user.service.UserServiceImpl;
 import com.itplh.web.mvc.controller.RestController;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Path;
@@ -19,7 +19,8 @@ import java.util.Objects;
 @Path("/user")
 public class UserRestController implements RestController {
 
-    private UserService userService = new UserServiceImpl();
+    @Resource(name = "bean/UserService")
+    private UserService userService;
 
     @Path("/all")
     public Result all(HttpServletRequest request, HttpServletResponse response) {

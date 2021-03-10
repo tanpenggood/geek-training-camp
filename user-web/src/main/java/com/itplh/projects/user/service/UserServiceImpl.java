@@ -2,8 +2,10 @@ package com.itplh.projects.user.service;
 
 import com.itplh.projects.user.domain.User;
 import com.itplh.projects.user.repository.DatabaseUserRepository;
+import com.itplh.projects.user.repository.JpaUserRepository;
 import com.itplh.projects.user.repository.UserRepository;
 
+import javax.annotation.Resource;
 import java.util.Collection;
 
 /**
@@ -11,16 +13,20 @@ import java.util.Collection;
  */
 public class UserServiceImpl implements UserService {
 
-    private UserRepository userRepository = new DatabaseUserRepository();
+    @Resource(name = "bean/JpaUserRepository")
+    private UserRepository jpaUserRepository;
+
+    @Resource(name = "bean/DatabaseUserRepository")
+    private UserRepository databaseUserRepository;
 
     @Override
     public boolean register(User user) {
-        return userRepository.save(user);
+        return jpaUserRepository.save(user);
     }
 
     @Override
     public boolean deregister(User user) {
-        return userRepository.deleteById(user.getId());
+        return databaseUserRepository.deleteById(user.getId());
     }
 
     @Override
@@ -40,11 +46,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User queryUserByName(String name) {
-        return userRepository.getByName(name);
+        return databaseUserRepository.getByName(name);
     }
 
     @Override
     public Collection<User> queryAll() {
-        return userRepository.getAll();
+        return databaseUserRepository.getAll();
     }
 }
