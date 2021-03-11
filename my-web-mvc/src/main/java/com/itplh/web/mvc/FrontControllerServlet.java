@@ -65,7 +65,14 @@ public class FrontControllerServlet extends HttpServlet {
      * @param servletConfig
      */
     public void init(ServletConfig servletConfig) {
+        String contextPath = servletConfig.getServletContext().getContextPath();
         initHandleMethods();
+        logger.info("all path----------------------------");
+        if (StringUtils.isEmpty(contextPath)) {
+            handleMethodInfoMapping.keySet().forEach(path -> System.out.println("http://localhost:8080" + path));
+        } else {
+            handleMethodInfoMapping.keySet().forEach(path -> System.out.println(String.format("http://localhost:8080%s%s", contextPath, path)));
+        }
     }
 
     /**
@@ -95,8 +102,6 @@ public class FrontControllerServlet extends HttpServlet {
                 }
             }
         }
-        logger.info("all path----------------------------");
-        handleMethodInfoMapping.keySet().forEach(path -> System.out.println("http://localhost:8080" + path));
     }
 
     /**
