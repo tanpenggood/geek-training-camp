@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -98,6 +99,20 @@ public class ComponentContext {
     }
 
     /**
+     * 通过Class进行依赖查找
+     * 应用场景：通过接口查找实现类
+     *
+     * @param targetClass
+     * @return
+     */
+    public <C> List<C> getComponents(Class<C> targetClass) {
+        return classNameMap.values().stream()
+                .filter(clazz -> targetClass.isAssignableFrom(clazz.getClass()))
+                .map(targetClass::cast)
+                .collect(Collectors.toList());
+    }
+
+    /**
      * 获取所有的组件名称
      *
      * @return
@@ -105,7 +120,6 @@ public class ComponentContext {
     public List<String> getComponentNames() {
         return new ArrayList<>(componentsMap.keySet());
     }
-
 
     public void init(ServletContext servletContext) throws RuntimeException {
         servletContext.setAttribute(CONTEXT_NAME, this);
@@ -149,11 +163,9 @@ public class ComponentContext {
         // 遍历获取所有的组件名称
         List<String> componentNames = listAllComponentNames();
         // 通过依赖查找，实例化对象（ Tomcat BeanFactory setter 方法的执行，仅支持简单类型）
-        componentNames.forEach(name -> {
-            Object component = lookupComponent(name);
-            componentsMap.put(name, component);
-            classNameMap.put(component.getClass().getName(), component);
-        });
+        componentNames.forEach(name -> componentsMap.put(name, lookupComponent(name)));
+        // 通过 {class name: class instance} 键值队的形式存储所有Component，方便通过class name查找
+        componentsMap.values().forEach(clazz -> classNameMap.put(clazz.getClass().getName(), clazz));
     }
 
     /**

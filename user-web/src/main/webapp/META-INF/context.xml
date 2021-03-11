@@ -63,4 +63,12 @@
               type="com.itplh.projects.user.web.controller.UserRestController"
               factory="org.apache.naming.factory.BeanFactory"/>
 
+    <Resource name="bean/HelloWorldController" auth="Container"
+              type="com.itplh.projects.user.web.controller.HelloWorldController"
+              factory="org.apache.naming.factory.BeanFactory"/>
+
+    <Resource name="bean/JndiController" auth="Container"
+              type="com.itplh.projects.user.web.controller.JndiController"
+              factory="org.apache.naming.factory.BeanFactory"/>
+
 </Context>

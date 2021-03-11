@@ -37,7 +37,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.ServiceLoader;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -74,7 +73,8 @@ public class FrontControllerServlet extends HttpServlet {
      * 利用 ServiceLoader 技术（Java SPI）
      */
     private void initHandleMethods() {
-        for (Controller controller : ServiceLoader.load(Controller.class)) {
+        List<Controller> controllers = ComponentContext.getInstance().getComponents(Controller.class);
+        for (Controller controller : controllers) {
             Class<?> controllerClass = controller.getClass();
             Path pathFromClass = controllerClass.getAnnotation(Path.class);
             String requestPathByClass = pathFromClass.value();
@@ -91,10 +91,6 @@ public class FrontControllerServlet extends HttpServlet {
                     completeRequestPath += pathFromMethod.value();
                     handleMethodInfoMapping.put(completeRequestPath,
                             new HandlerMethodInfo(completeRequestPath, method, supportedHttpMethods));
-                    // 使用Component容器中的对象替换ServiceLoader加载的对象（ServiceLoader加载的对象依赖注入的Component为null）
-                    controller = Optional.ofNullable(ComponentContext.getInstance().getComponent(controllerClass))
-                            .map(Controller.class::cast)
-                            .orElse(controller);
                     controllersMapping.put(completeRequestPath, controller);
                 }
             }
@@ -159,6 +155,7 @@ public class FrontControllerServlet extends HttpServlet {
                     if (isNotAllowed) {
                         // HTTP 方法不支持
                         response.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+                        writeJsonAndFlush(response, ResponseResult.error("HTTP METHOD NOT ALLOWED", requestMappingPath));
                         return;
                     }
 
@@ -170,6 +167,7 @@ public class FrontControllerServlet extends HttpServlet {
                         // bean validate fail, http status return 400
                         logger.warning(e.getMessage());
                         response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                        writeJsonAndFlush(response, ResponseResult.error(e.getMessage(), requestMappingPath));
                         return;
                     }
 
@@ -211,13 +209,7 @@ public class FrontControllerServlet extends HttpServlet {
                         requestDispatcher.forward(request, response);
                         return;
                     } else if (controller instanceof RestController) {
-                        response.setCharacterEncoding("UTF-8");
-                        response.setContentType("application/json");
-                        try (PrintWriter writer = response.getWriter()) {
-                            String result = JSON.toJSONString(handlerMethodInfo.getHandlerMethod().invoke(controller, methodParams));
-                            writer.write(result);
-                            writer.flush();
-                        }
+                        writeJsonAndFlush(response, handlerMethodInfo.getHandlerMethod().invoke(controller, methodParams));
                     }
                 }
             } catch (Throwable throwable) {
@@ -227,6 +219,22 @@ public class FrontControllerServlet extends HttpServlet {
                     throw new ServletException(throwable.getCause());
                 }
             }
+        }
+    }
+
+    /**
+     * 响应JSON数据
+     *
+     * @param response
+     * @param result
+     * @throws IOException
+     */
+    private void writeJsonAndFlush(HttpServletResponse response, Object result) throws IOException {
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("application/json");
+        try (PrintWriter writer = response.getWriter()) {
+            writer.write(JSON.toJSONString(result));
+            writer.flush();
         }
     }
 
