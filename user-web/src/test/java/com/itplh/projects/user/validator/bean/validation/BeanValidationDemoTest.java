@@ -1,13 +1,16 @@
 package com.itplh.projects.user.validator.bean.validation;
 
-
 import com.itplh.projects.user.domain.User;
 
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
-public class BeanValidationDemo {
+/**
+ * @author: tanpenggood
+ * @date: 2021-03-12 00:45
+ */
+public class BeanValidationDemoTest {
 
     public static void main(String[] args) {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
@@ -25,4 +28,5 @@ public class BeanValidationDemo {
         // 校验结果
         validator.validate(user).forEach(c -> System.out.println(String.format("%s %s", c.getPropertyPath(), c.getMessage())));
     }
+
 }

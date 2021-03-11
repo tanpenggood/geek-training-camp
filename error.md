@@ -100,3 +100,28 @@ Caused by: javax.validation.ValidationException: HV000183: Unable to load 'javax
     <version>3.0.1-b11</version>
 </dependency>
 ```
+
+## javax.el相关异常
+
+```java
+1. javax.validation.ValidationException Unable to load 'javax.el.ExpressionFactory'.
+
+2. 信息: validateJarFile(/Users/tanpenggood/geek-training-camp/.extract/webapps/ROOT/WEB-INF/lib/javax.el-3.0.1-b11.jar) - jar not loaded. See Servlet Spec 2.on 9.7.2. Offending class: javax/el/Expression.class
+
+3. have different Class objects for the type javax/el/ExpressionFactory used in the signature
+```
+
+**解决方案**
+
+引入依赖，注意 scope 为 test。
+
+即，仅在测试时需要，因为运行时tomcat内自带有相关依赖。
+
+```xml
+<dependency>
+    <groupId>org.glassfish</groupId>
+    <artifactId>javax.el</artifactId>
+    <version>3.0.1-b11</version>
+    <scope>test</scope>
+</dependency>
+```
