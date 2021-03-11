@@ -13,7 +13,6 @@ import javax.naming.NameClassPair;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 import javax.servlet.ServletContext;
-import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -233,17 +232,6 @@ public class ComponentContext {
      * @param componentClass
      */
     private void processPostConstruct(Object component, Class<?> componentClass) {
-        List<Method> collect = new ArrayList<>();
-        for (Method method : componentClass.getDeclaredMethods()) {
-            boolean flag = Modifier.isPublic(method.getModifiers()) // public方法
-                    && Objects.equals(void.class, method.getReturnType()) // 返回值为void
-                    && method.getParameterCount() == 0 // 没有参数
-                    && method.isAnnotationPresent(PostConstruct.class); // 方法被PostConstruct注解标记
-            if (flag) {
-                collect.add(method);
-            }
-        }
-
         Arrays.stream(componentClass.getDeclaredMethods())
                 .filter(method -> {
                     // 过滤满足执行PostConstruct回调的方法
