@@ -11,6 +11,8 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -64,6 +66,7 @@ public class FrontControllerServlet extends HttpServlet {
      *
      * @param servletConfig
      */
+    @Override
     public void init(ServletConfig servletConfig) {
         String contextPath = servletConfig.getServletContext().getContextPath();
         initHandleMethods();
@@ -253,17 +256,21 @@ public class FrontControllerServlet extends HttpServlet {
      * @return
      */
     private Object[] buildMethodParams(Method handlerMethod, HttpServletRequest request, HttpServletResponse response) throws InvalidParameterException {
-        List methodParams = new ArrayList(Arrays.asList(request, response));
+        int parameterCount = handlerMethod.getParameterCount();
+        if (parameterCount == 0) {
+            return new Object[0];
+        }
+        List methodParams = new ArrayList(parameterCount + (parameterCount >> 1));
         Map<String, String[]> parameterMap = request.getParameterMap();
-        // 满足为请求参数构建实体的条件 1.handle方法有相应实体接收参数
-        boolean buildRequestParameterEntity = handlerMethod.getParameterCount() > 2;
-        if (buildRequestParameterEntity) {
-            Arrays.stream(handlerMethod.getParameters())
-                    // 跳过request response参数
-                    .skip(2)
-                    .forEach(methodParam -> {
-                        Object entity = null;
-                        Class methodParamClass = methodParam.getType();
+        Arrays.stream(handlerMethod.getParameters())
+                .forEach(methodParam -> {
+                    Object entity = null;
+                    Class methodParamClass = methodParam.getType();
+                    if (ServletRequest.class.isAssignableFrom(methodParamClass)) {
+                        entity = request;
+                    } else if (ServletResponse.class.isAssignableFrom(methodParamClass)) {
+                        entity = response;
+                    } else {
                         try {
                             entity = methodParamClass.newInstance();
                             // 请求参数不为空则查找对应实体字段为其赋值
@@ -290,10 +297,9 @@ public class FrontControllerServlet extends HttpServlet {
                         }
                         // bean validate
                         beanValidatorIfNecessary(methodParam, entity);
-
-                        methodParams.add(entity);
-                    });
-        }
+                    }
+                    methodParams.add(entity);
+                });
         return methodParams.toArray(new Object[0]);
     }
 
