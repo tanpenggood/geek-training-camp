@@ -11,41 +11,44 @@ import java.util.Set;
 
 public class DelegatingValidator implements Validator {
 
-    private Validator validator;
+    private ValidatorFactory factory;
 
     @PostConstruct
     public void init() {
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        this.validator = factory.getValidator();
+        this.factory = Validation.buildDefaultValidatorFactory();
+    }
+
+    private Validator getValidator() {
+        return factory.getValidator();
     }
 
     @Override
     public <T> Set<ConstraintViolation<T>> validate(T object, Class<?>... groups) {
-        return validator.validate(object, groups);
+        return getValidator().validate(object, groups);
     }
 
     @Override
     public <T> Set<ConstraintViolation<T>> validateProperty(T object, String propertyName, Class<?>... groups) {
-        return validator.validateProperty(object, propertyName, groups);
+        return getValidator().validateProperty(object, propertyName, groups);
     }
 
     @Override
     public <T> Set<ConstraintViolation<T>> validateValue(Class<T> beanType, String propertyName, Object value, Class<?>... groups) {
-        return validator.validateValue(beanType, propertyName, value, groups);
+        return getValidator().validateValue(beanType, propertyName, value, groups);
     }
 
     @Override
     public BeanDescriptor getConstraintsForClass(Class<?> clazz) {
-        return validator.getConstraintsForClass(clazz);
+        return getValidator().getConstraintsForClass(clazz);
     }
 
     @Override
     public <T> T unwrap(Class<T> type) {
-        return validator.unwrap(type);
+        return getValidator().unwrap(type);
     }
 
     @Override
     public ExecutableValidator forExecutables() {
-        return validator.forExecutables();
+        return getValidator().forExecutables();
     }
 }
