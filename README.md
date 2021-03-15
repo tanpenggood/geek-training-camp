@@ -17,6 +17,9 @@
     
     # mvnDebug启动
     mvnDebug tomcat7:run
+    
+    # 打包再启动（跳过测试编译及打包）
+    mvn clean package -U -Dmaven.test.skip=true tomcat7:run
     ```
 
 2. 启动时tomcat会输出 all access path.
