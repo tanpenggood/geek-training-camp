@@ -120,6 +120,12 @@ public class ComponentContext {
         return new ArrayList<>(componentsMap.keySet());
     }
 
+    /**
+     * ComponentContext初始化方法
+     *
+     * @param servletContext
+     * @throws RuntimeException
+     */
     public void init(ServletContext servletContext) throws RuntimeException {
         servletContext.setAttribute(CONTEXT_NAME, this);
         ComponentContext.servletContext = servletContext;
@@ -127,11 +133,8 @@ public class ComponentContext {
         this.classLoader = servletContext.getClassLoader();
         // 初始化envContext
         initEnvContext();
-        // 实例化组件 JNDI读取
-        instantiateComponents();
-        // 初始化组件 依赖注入、PostConstruct回调等
-        initializeComponents();
-
+        // 组件生命周期
+        lifeCycleComponents();
         logger.info("all component----------------------------");
         componentsMap.forEach((k, v) -> System.out.println(String.format("%s %s", k, v)));
     }
@@ -156,6 +159,24 @@ public class ComponentContext {
     }
 
     /**
+     * 执行组件生命周期（支持 Java 标准 Commons Annotation 生命周期）
+     * <ol>
+     * <li>实例化组件阶段 - JNDI查找</li>
+     * <li>依赖注入阶段 - {@link Resource}</li>
+     * <li>PostConstruct回调阶段 - {@link PostConstruct}</li>
+     * <li>PreDestroy回调阶段 - {@link PreDestroy}</li>
+     * </ol>
+     */
+    private void lifeCycleComponents() {
+        // 实例化组件 JNDI查找
+        instantiateComponents();
+        // 依赖注入阶段 - {@link Resource} 内部查找
+        injectComponents();
+        // PostConstruct回调阶段 - {@link PostConstruct}
+        postConstructComponents();
+    }
+
+    /**
      * 实例化组件
      */
     private void instantiateComponents() {
@@ -168,6 +189,20 @@ public class ComponentContext {
     }
 
     /**
+     * 依赖注入阶段 - {@link Resource}
+     */
+    private void injectComponents() {
+        componentsMap.values().forEach(component -> injectComponents(component, component.getClass()));
+    }
+
+    /**
+     * PostConstruct回调阶段 - {@link PostConstruct}
+     */
+    private void postConstructComponents() {
+        componentsMap.values().forEach(component -> processPostConstruct(component, component.getClass()));
+    }
+
+    /**
      * JNDI查找
      *
      * @param name
@@ -176,24 +211,6 @@ public class ComponentContext {
      */
     private <C> C lookupComponent(String name) {
         return executeInContext(context -> (C) context.lookup(name));
-    }
-
-    /**
-     * 初始化组件（支持 Java 标准 Commons Annotation 生命周期）
-     * <ol>
-     * <li>依赖注入阶段 - {@link Resource}</li>
-     * <li>PostConstruct回调阶段 - {@link PostConstruct}</li>
-     * <li>PreDestroy回调阶段 - {@link PreDestroy}</li>
-     * </ol>
-     */
-    private void initializeComponents() {
-        componentsMap.values().forEach(component -> {
-            Class<?> componentClass = component.getClass();
-            // 依赖注入阶段 - {@link Resource}
-            injectComponents(component, componentClass);
-            // PostConstruct回调阶段 - {@link PostConstruct}
-            processPostConstruct(component, componentClass);
-        });
     }
 
     /**
@@ -213,7 +230,8 @@ public class ComponentContext {
                 .forEach(field -> {
                     Resource resource = field.getAnnotation(Resource.class);
                     String resourceName = resource.name();
-                    Object injectObject = lookupComponent(resourceName);
+                    // 直接从componentsMap中查找注入对象
+                    Object injectObject = getComponent(resourceName);
                     try {
                         field.setAccessible(true);
                         // 注入目标对象
@@ -325,7 +343,7 @@ public class ComponentContext {
     public void destroy() {
         close(this.envContext);
         // PreDestroy回调阶段 - {@link PreDestroy}
-        componentsMap.values().forEach(component -> processPreDestroy(component, component.getClass()));
+        componentsMap.values().forEach(component -> preDestroyComponents(component, component.getClass()));
     }
 
     /**
@@ -334,7 +352,7 @@ public class ComponentContext {
      * @param component
      * @param componentClass
      */
-    private void processPreDestroy(Object component, Class<?> componentClass) {
+    private void preDestroyComponents(Object component, Class<?> componentClass) {
         Arrays.stream(componentClass.getDeclaredMethods())
                 .filter(method -> {
                     // 过滤满足执行PreDestroy回调的方法
