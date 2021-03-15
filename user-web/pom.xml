@@ -71,6 +71,16 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- Jolokia  -->
+        <!--https://mvnrepository.com/artifact/org.jolokia/jolokia-core-->
+        <dependency>
+            <groupId>org.jolokia</groupId>
+            <artifactId>jolokia-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jolokia</groupId>
+            <artifactId>jolokia-client-java</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

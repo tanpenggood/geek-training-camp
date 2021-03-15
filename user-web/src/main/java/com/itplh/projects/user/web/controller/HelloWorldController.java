@@ -12,7 +12,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 
 /**
- * 输出 “Hello,World” Controller
+ * 输出 “HelloJolokia,World” Controller
  */
 @Path("/hello")
 public class HelloWorldController implements PageController {

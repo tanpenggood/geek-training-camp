@@ -29,6 +29,8 @@
         <fastjson.version>1.2.72</fastjson.version>
         <hibernate.version>5.1.0.Final</hibernate.version>
         <hibernate.validator.version>5.1.0.Final</hibernate.validator.version>
+        <jolokia.version>1.6.2</jolokia.version>
+        <jolokia.client.version>1.6.2</jolokia.client.version>
 
         <!-- Maven Plugins 版本 -->
         <maven.compiler.version>3.8.1</maven.compiler.version>
@@ -104,6 +106,18 @@
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-validator</artifactId>
                 <version>${hibernate.validator.version}</version>
+            </dependency>
+
+            <!-- Jolokia -->
+            <dependency>
+                <groupId>org.jolokia</groupId>
+                <artifactId>jolokia-core</artifactId>
+                <version>${jolokia.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jolokia</groupId>
+                <artifactId>jolokia-client-java</artifactId>
+                <version>${jolokia.client.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

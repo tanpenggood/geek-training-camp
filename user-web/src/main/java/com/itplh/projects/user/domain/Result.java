@@ -6,6 +6,9 @@ package com.itplh.projects.user.domain;
  */
 public class Result<T> {
 
+    public static final String SUCCESS = "操作成功";
+    public static final String FAIL = "操作失败";
+
     private int code;
     private boolean success;
     private String message;
@@ -13,7 +16,7 @@ public class Result<T> {
     private long timestamp;
 
     public static <T> Result<T> ok() {
-        return Result.ok("操作成功");
+        return Result.ok(SUCCESS);
     }
 
     public static <T> Result<T> ok(String message) {
@@ -25,7 +28,7 @@ public class Result<T> {
     }
 
     public static <T> Result<T> error() {
-        return Result.error("操作失败");
+        return Result.error(FAIL);
     }
 
     public static <T> Result<T> error(String message) {

@@ -20,7 +20,6 @@ public class JndiController implements PageController {
         System.out.println(String.format("%s 依赖 %s", this, helloWorldController));
     }
 
-    @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         return "jndi-test.jsp";
     }

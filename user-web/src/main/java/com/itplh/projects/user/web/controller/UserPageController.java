@@ -18,7 +18,7 @@ import java.util.logging.Logger;
  * @date: 2021-03-01 01:10
  */
 @Path("/user")
-public class UserController implements PageController {
+public class UserPageController implements PageController {
 
     private Logger logger = Logger.getLogger(this.getClass().getName());
 
@@ -58,11 +58,6 @@ public class UserController implements PageController {
     @Path("/register-fail")
     public String registerFail(HttpServletRequest request, HttpServletResponse response) {
         return "register-fail.jsp";
-    }
-
-    @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws Throwable {
-        return null;
     }
 
 }

@@ -55,8 +55,8 @@
               type="com.itplh.projects.user.service.UserServiceImpl"
               factory="org.apache.naming.factory.BeanFactory"/>
 
-    <Resource name="bean/UserController" auth="Container"
-              type="com.itplh.projects.user.web.controller.UserController"
+    <Resource name="bean/UserPageController" auth="Container"
+              type="com.itplh.projects.user.web.controller.UserPageController"
               factory="org.apache.naming.factory.BeanFactory"/>
 
     <Resource name="bean/UserRestController" auth="Container"
@@ -69,6 +69,14 @@
 
     <Resource name="bean/JndiController" auth="Container"
               type="com.itplh.projects.user.web.controller.JndiController"
+              factory="org.apache.naming.factory.BeanFactory"/>
+
+    <Resource name="bean/JolokiaRestController" auth="Container"
+              type="com.itplh.projects.user.web.controller.JolokiaRestController"
+              factory="org.apache.naming.factory.BeanFactory"/>
+
+    <Resource name="bean/JolokiaPageController" auth="Container"
+              type="com.itplh.projects.user.web.controller.JolokiaPageController"
               factory="org.apache.naming.factory.BeanFactory"/>
 
 </Context>
