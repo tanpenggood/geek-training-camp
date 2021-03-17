@@ -279,11 +279,27 @@ public class ComponentContext {
                 });
     }
 
+
     private List<String> listAllComponentNames() {
-        return listComponentNames("/");
+        return listComponentNames("/", null);
     }
 
-    private List<String> listComponentNames(String name) {
+    /**
+     * 返回JNDI names
+     *
+     * @param targetType 限定类型查找 为null则不被限定
+     * @return
+     */
+    public List<String> listAllComponentNames(Class targetType) {
+        return listComponentNames("/", targetType);
+    }
+
+    /**
+     * @param name
+     * @param targetType 限定类型查找 为null则不被限定
+     * @return
+     */
+    private List<String> listComponentNames(String name, Class targetType) {
         return executeInContext(context -> {
             NamingEnumeration<NameClassPair> node = executeInContext(context, ctx -> ctx.list(name), true);
 
@@ -302,11 +318,15 @@ public class ComponentContext {
                 // 如果当前类是Context的实现类，则是目录，再进行递归查找
                 boolean isDirectory = Context.class.isAssignableFrom(currentClass);
                 if (isDirectory) {
-                    fullNames.addAll(listComponentNames(elementName));
+                    fullNames.addAll(listComponentNames(elementName, targetType));
                 } else {
-                    // 否则，当前名称绑定目标类型的话，添加该名称到集合中
                     String fullName = name.startsWith("/") ? elementName : name + "/" + elementName;
-                    fullNames.add(fullName);
+                    // 未限定类型查找，直接添加该名称到集合中
+                    if (targetType == null) {
+                        fullNames.add(fullName);
+                    } else if (targetType.isAssignableFrom(currentClass)) {
+                        fullNames.add(fullName);
+                    }
                 }
             }
             return fullNames;
