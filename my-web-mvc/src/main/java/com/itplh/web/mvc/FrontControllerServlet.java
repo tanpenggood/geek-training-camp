@@ -33,6 +33,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -71,10 +72,12 @@ public class FrontControllerServlet extends HttpServlet {
         String contextPath = servletConfig.getServletContext().getContextPath();
         initHandleMethods();
         logger.info("all path----------------------------");
+        List<String> allPaths = handleMethodInfoMapping.keySet().stream()
+                .sorted(Comparator.naturalOrder()).collect(Collectors.toList());
         if (StringUtils.isEmpty(contextPath)) {
-            handleMethodInfoMapping.keySet().forEach(path -> System.out.println("http://localhost:8080" + path));
+            allPaths.forEach(path -> System.out.println("http://localhost:8080" + path));
         } else {
-            handleMethodInfoMapping.keySet().forEach(path -> System.out.println(String.format("http://localhost:8080%s%s", contextPath, path)));
+            allPaths.forEach(path -> System.out.println(String.format("http://localhost:8080%s%s", contextPath, path)));
         }
     }
 
