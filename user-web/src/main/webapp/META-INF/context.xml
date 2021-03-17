@@ -80,4 +80,12 @@
               type="com.itplh.projects.user.web.controller.JolokiaPageController"
               factory="org.apache.naming.factory.BeanFactory"/>
 
+    <Resource name="bean/ConfigController" auth="Container"
+              type="com.itplh.projects.user.web.controller.ConfigController"
+              factory="org.apache.naming.factory.BeanFactory"/>
+
+    <Resource name="bean/Config" auth="Container"
+              type="com.itplh.projects.user.configuration.microprofile.config.JavaConfig"
+              factory="org.apache.naming.factory.BeanFactory"/>
+
 </Context>
