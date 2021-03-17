@@ -76,6 +76,15 @@ public class ComponentContext {
     }
 
     /**
+     * 获取ServletContext
+     *
+     * @return
+     */
+    public ServletContext getServletContext() {
+        return servletContext;
+    }
+
+    /**
      * JNDI查找
      *
      * @param name
@@ -229,9 +238,12 @@ public class ComponentContext {
                 })
                 .forEach(field -> {
                     Resource resource = field.getAnnotation(Resource.class);
-                    String resourceName = resource.name();
-                    // 直接从componentsMap中查找注入对象
-                    Object injectObject = getComponent(resourceName);
+                    // by jndi name 直接从componentsMap中查找注入对象
+                    Object injectObject = getComponent(resource.name());
+                    // by class name
+                    if (injectObject == null) {
+                        injectObject = getComponent(resource.type());
+                    }
                     try {
                         field.setAccessible(true);
                         // 注入目标对象
