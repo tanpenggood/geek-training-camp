@@ -39,6 +39,6 @@ public class ServletContextConfigSource implements ConfigSource {
 
     @Override
     public String getName() {
-        return "Operation System Properties";
+        return "ServletContextConfigSource";
     }
 }

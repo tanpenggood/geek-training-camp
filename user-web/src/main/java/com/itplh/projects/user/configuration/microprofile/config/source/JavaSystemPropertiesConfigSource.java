@@ -37,6 +37,6 @@ public class JavaSystemPropertiesConfigSource implements ConfigSource {
 
     @Override
     public String getName() {
-        return "Java System Properties";
+        return "JavaSystemPropertiesConfigSource";
     }
 }

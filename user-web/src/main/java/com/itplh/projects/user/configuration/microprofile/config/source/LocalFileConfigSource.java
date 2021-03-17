@@ -37,6 +37,6 @@ public class LocalFileConfigSource implements ConfigSource {
 
     @Override
     public String getName() {
-        return "Local File Properties";
+        return "LocalFileConfigSource";
     }
 }
