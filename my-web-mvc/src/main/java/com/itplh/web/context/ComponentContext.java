@@ -76,6 +76,17 @@ public class ComponentContext {
     }
 
     /**
+     * JNDI查找
+     *
+     * @param name
+     * @param <C>
+     * @return
+     */
+    public <C> C lookupComponent(String name) {
+        return executeInContext(context -> (C) context.lookup(name));
+    }
+
+    /**
      * 通过名称进行依赖查找
      *
      * @param name JNDI name
@@ -200,17 +211,6 @@ public class ComponentContext {
      */
     private void postConstructComponents() {
         componentsMap.values().forEach(component -> processPostConstruct(component, component.getClass()));
-    }
-
-    /**
-     * JNDI查找
-     *
-     * @param name
-     * @param <C>
-     * @return
-     */
-    private <C> C lookupComponent(String name) {
-        return executeInContext(context -> (C) context.lookup(name));
     }
 
     /**

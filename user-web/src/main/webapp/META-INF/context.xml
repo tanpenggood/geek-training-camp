@@ -23,6 +23,7 @@
               url="jdbc:derby:./db/user-platform;create=true"/>
 
     <Environment name="tjndi" value="JNDI TEST" type="java.lang.String"/>
+    <Environment name="application.name" value="user-web" type="java.lang.String"/>
 
     <!-- FactoryBean -->
     <Resource name="bean/DBConnectionManager" auth="Container"

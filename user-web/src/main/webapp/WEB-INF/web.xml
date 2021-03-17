@@ -118,4 +118,10 @@
         <welcome-file>/index.jsp</welcome-file>
     </welcome-file-list>
 
+    <!-- ServletContext ÅäÖÃ²ÎÊý -->
+    <context-param>
+        <param-name>application.name</param-name>
+        <param-value>user-web</param-value>
+    </context-param>
+
 </web-app>

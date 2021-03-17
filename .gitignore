@@ -14,4 +14,4 @@ target/
 .extract
 db
 .flattened-pom.xml
-derby.log
+*.log
