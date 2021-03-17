@@ -1,0 +1,9 @@
+com.itplh.projects.user.configuration.microprofile.config.converter.StringToByteConverter
+com.itplh.projects.user.configuration.microprofile.config.converter.StringToShortConverter
+com.itplh.projects.user.configuration.microprofile.config.converter.StringToIntegerConverter
+com.itplh.projects.user.configuration.microprofile.config.converter.StringToLongConverter
+com.itplh.projects.user.configuration.microprofile.config.converter.StringToFloatConverter
+com.itplh.projects.user.configuration.microprofile.config.converter.StringToDoubleConverter
+com.itplh.projects.user.configuration.microprofile.config.converter.StringToBooleanConverter
+com.itplh.projects.user.configuration.microprofile.config.converter.StringToCharacterConverter
+com.itplh.projects.user.configuration.microprofile.config.converter.StringToStringConverter
