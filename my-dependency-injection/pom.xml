@@ -10,9 +10,9 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>my-web-mvc</artifactId>
-    <name>my-web-mvc ${revision}</name>
-    <description>My Web-MVC Framework ${revision}</description>
+    <artifactId>my-dependency-injection</artifactId>
+    <name>my-dependency-injection ${revision}</name>
+    <description>My Dependency Injection Framework ${revision}</description>
 
     <dependencies>
         <!-- Servlet API -->
@@ -21,33 +21,10 @@
             <artifactId>javax.servlet-api</artifactId>
             <scope>provided</scope>
         </dependency>
-
-        <!-- JAX-RS API -->
-        <dependency>
-            <groupId>javax.ws.rs</groupId>
-            <artifactId>javax.ws.rs-api</artifactId>
-        </dependency>
-
         <dependency>
             <groupId>com.itplh.projects</groupId>
-            <artifactId>my-dependency-injection</artifactId>
+            <artifactId>my-initializer</artifactId>
             <version>${revision}</version>
         </dependency>
-
-        <dependency>
-            <groupId>commons-lang</groupId>
-            <artifactId>commons-lang</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-        </dependency>
-
-        <!-- Hibernate Validator -->
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-validator</artifactId>
-        </dependency>
     </dependencies>
-
 </project>

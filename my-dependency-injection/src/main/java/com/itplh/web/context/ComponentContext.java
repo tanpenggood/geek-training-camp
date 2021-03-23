@@ -2,7 +2,6 @@ package com.itplh.web.context;
 
 
 import com.itplh.function.ThrowableFunction;
-import com.itplh.web.context.listener.ComponentContextInitializerListener;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -29,7 +28,7 @@ import java.util.stream.Stream;
 /**
  * 组件上下文（Web 应用全局使用）
  * <p>
- * 初始化ComponentContext {@link ComponentContextInitializerListener}
+ * 初始化ComponentContext {@link ComponentContextInitializer}
  *
  * @author: tanpenggood
  * @date: 2021-03-10 01:22
