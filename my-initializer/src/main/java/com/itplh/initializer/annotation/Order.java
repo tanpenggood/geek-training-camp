@@ -16,10 +16,10 @@ import java.lang.annotation.Target;
 public @interface Order {
 
     /**
-     * 指定顺序，默认为int最小值
+     * 指定顺序，默认为-1
      *
      * @return
      */
-    int value() default Integer.MIN_VALUE;
+    int value() default -1;
 
 }
