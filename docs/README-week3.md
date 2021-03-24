@@ -44,11 +44,11 @@
     // Program 参数
     com.itplh.projects.user.configuration.microprofile.config.source.JavaSystemPropertiesConfigSource
     // 本地配置文件
-    com.itplh.projects.user.configuration.microprofile.config.source.LocalFileConfigSource
+    com.itplh.projects.user.configuration.microprofile.config.source.DefaultResourceConfigSource
     // OS 环境变量
-    com.itplh.projects.user.configuration.microprofile.config.source.OSEnvironmentConfigSource
+    com.itplh.projects.user.configuration.microprofile.config.source.OperationSystemEnvironmentVariablesConfigSource
     // ServletContext配置(web.xml)
-    com.itplh.projects.user.configuration.microprofile.config.source.ServletContextConfigSource
+    com.itplh.projects.user.configuration.microprofile.config.source.servlet.ServletContextConfigSource
     // JNDI配置(context.xml)
     com.itplh.projects.user.configuration.microprofile.config.source.JndiConfigSource
     ```
