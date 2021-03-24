@@ -84,8 +84,8 @@
               type="com.itplh.projects.user.web.controller.ConfigController"
               factory="org.apache.naming.factory.BeanFactory"/>
 
-    <Resource name="bean/Config" auth="Container"
-              type="com.itplh.projects.user.configuration.microprofile.config.JavaConfig"
+    <Resource name="bean/ConfigProviderResolver" auth="Container"
+              type="com.itplh.projects.user.configuration.microprofile.config.DefaultConfigProviderResolver"
               factory="org.apache.naming.factory.BeanFactory"/>
 
 </Context>

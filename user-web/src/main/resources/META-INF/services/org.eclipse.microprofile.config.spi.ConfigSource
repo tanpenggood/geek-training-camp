@@ -1,5 +1,0 @@
-com.itplh.projects.user.configuration.microprofile.config.source.JavaSystemPropertiesConfigSource
-com.itplh.projects.user.configuration.microprofile.config.source.LocalFileConfigSource
-com.itplh.projects.user.configuration.microprofile.config.source.OSEnvironmentConfigSource
-com.itplh.projects.user.configuration.microprofile.config.source.ServletContextConfigSource
-com.itplh.projects.user.configuration.microprofile.config.source.JndiConfigSource

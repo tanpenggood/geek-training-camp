@@ -18,7 +18,17 @@
     <dependencies>
         <dependency>
             <groupId>com.itplh.projects</groupId>
+            <artifactId>my-dependency-injection</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.itplh.projects</groupId>
             <artifactId>my-web-mvc</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.itplh.projects</groupId>
+            <artifactId>my-configuration</artifactId>
             <version>${revision}</version>
         </dependency>
 
@@ -82,16 +92,11 @@
             <artifactId>jolokia-client-java</artifactId>
         </dependency>
 
-        <!-- configuration -->
+        <!-- -->
         <dependency>
-            <groupId>commons-configuration</groupId>
-            <artifactId>commons-configuration</artifactId>
-        </dependency>
-
-        <!-- Micro Profile -->
-        <dependency>
-            <groupId>org.eclipse.microprofile.config</groupId>
-            <artifactId>microprofile-config-api</artifactId>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
