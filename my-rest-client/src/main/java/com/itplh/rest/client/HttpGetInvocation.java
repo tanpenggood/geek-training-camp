@@ -32,6 +32,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Future;
+import java.util.logging.Logger;
 
 /**
  * HTTP GET Method {@link Invocation}
@@ -40,6 +41,8 @@ import java.util.concurrent.Future;
  * @since
  */
 class HttpGetInvocation implements Invocation {
+
+    private Logger logger = Logger.getLogger(this.getClass().getName());
 
     private final URI uri;
 
@@ -77,6 +80,7 @@ class HttpGetInvocation implements Invocation {
             DefaultResponse response = new DefaultResponse();
             response.setConnection(connection);
             response.setStatus(statusCode);
+            logger.info(String.format("[%s] GET SUCCESS %s", Thread.currentThread().getName(), this.uri.toString()));
             return response;
 //            Response.Status status = Response.Status.fromStatusCode(statusCode);
 //            switch (status) {

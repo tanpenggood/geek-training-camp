@@ -274,7 +274,7 @@ public class DefaultInvocationBuilder implements Invocation.Builder {
 
     @Override
     public AsyncInvoker async() {
-        return null;
+        return new DefaultAsyncInvoker(this);
     }
 
 }
