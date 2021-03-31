@@ -1,3 +1,11 @@
+## 作业导航
+
+第三周：https://gitee.com/tanpenggood/geek-training-camp/blob/master/docs/README-week3.md
+
+第四周：https://gitee.com/tanpenggood/geek-training-camp/blob/master/docs/README-week4.md
+
+第五周：https://gitee.com/tanpenggood/geek-training-camp/blob/master/docs/README-week5.md
+
 ## start up
 
 1. 启动项目
