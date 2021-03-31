@@ -22,6 +22,7 @@ import javax.ws.rs.HttpMethod;
 import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.InvocationCallback;
 import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
@@ -80,6 +81,12 @@ class HttpGetInvocation implements Invocation {
             DefaultResponse response = new DefaultResponse();
             response.setConnection(connection);
             response.setStatus(statusCode);
+            // 设置响应头
+            MultivaluedMap responseHeaders = new MultivaluedHashMap();
+            connection.getHeaderFields().forEach((k, v) -> {
+                responseHeaders.addAll(k, v);
+            });
+            response.setHeaders(responseHeaders);
             logger.info(String.format("[%s] GET SUCCESS %s", Thread.currentThread().getName(), this.uri.toString()));
             return response;
 //            Response.Status status = Response.Status.fromStatusCode(statusCode);

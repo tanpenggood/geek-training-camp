@@ -19,11 +19,18 @@ import java.util.concurrent.TimeUnit;
 
 public class RestClientDemo {
 
-    private long start = System.currentTimeMillis();
-    private Map<String, String> requestBody = new HashMap<>();
+    private String getUri;
+    private String postUri;
+    private long start;
+    private Map<String, String> requestBody;
 
     @Before
     public void before() {
+        getUri = "http://127.0.0.1:8080/user-web/hello/get";
+        postUri = "http://127.0.0.1:8080/user-web/hello/post";
+        start = System.currentTimeMillis();
+
+        requestBody = new HashMap<>();
         requestBody.put("name", "张三");
         requestBody.put("age", "18");
         requestBody.put("sex", "男");
@@ -72,7 +79,7 @@ public class RestClientDemo {
     private Response getRequest() {
         Client client = ClientBuilder.newClient();
         return client
-                .target("http://127.0.0.1:8080/hello/world") // WebTarget
+                .target(getUri) // WebTarget
                 .request() // Invocation.Builder
                 .get(); //  Response
     }
@@ -80,7 +87,7 @@ public class RestClientDemo {
     private Future<Response> asyncGetRequest() throws Exception {
         Client client = ClientBuilder.newClient();
         return client
-                .target("http://127.0.0.1:8080/hello/world") // WebTarget
+                .target(getUri) // WebTarget
                 .request() // Invocation.Builder
                 .async() // AsyncInvoker
                 .get(); //  Response
@@ -89,7 +96,7 @@ public class RestClientDemo {
     private Response postRequest() {
         Client client = ClientBuilder.newClient();
         return client
-                .target("http://127.0.0.1:8080/hello/geek") // WebTarget
+                .target(postUri) // WebTarget
                 .request() // Invocation.Builder
                 .post(Entity.json(requestBody)); //  Response
     }
@@ -97,7 +104,7 @@ public class RestClientDemo {
     private Future<Response> asyncPostRequest() throws Exception {
         Client client = ClientBuilder.newClient();
         return client
-                .target("http://127.0.0.1:8080/hello/geek") // WebTarget
+                .target(postUri) // WebTarget
                 .request() // Invocation.Builder
                 .async() // AsyncInvoker
                 .post(Entity.json(requestBody)); //  Response

@@ -84,6 +84,10 @@
               type="com.itplh.projects.user.web.controller.ConfigController"
               factory="org.apache.naming.factory.BeanFactory"/>
 
+    <Resource name="bean/HelloRestController" auth="Container"
+              type="com.itplh.projects.user.web.controller.HelloRestController"
+              factory="org.apache.naming.factory.BeanFactory"/>
+
     <Resource name="bean/ConfigProviderResolver" auth="Container"
               type="com.itplh.projects.user.configuration.microprofile.config.DefaultConfigProviderResolver"
               factory="org.apache.naming.factory.BeanFactory"/>
