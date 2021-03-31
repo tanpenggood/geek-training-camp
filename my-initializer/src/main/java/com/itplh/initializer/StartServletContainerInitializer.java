@@ -41,6 +41,8 @@ public class StartServletContainerInitializer implements ServletContainerInitial
                 try {
                     MyApplicationInitializer webApplication = (MyApplicationInitializer) c.newInstance();
                     webApplication.onStartup(servletContext);
+                    // 注册应用销毁的回调
+                    Runtime.getRuntime().addShutdownHook(new Thread(() -> webApplication.onDestroyed()));
                 } catch (InstantiationException | IllegalAccessException | ServletException e) {
                     logger.log(Level.SEVERE, String.format("%s invoke onStartup fail.", c.getName()), e);
                 }

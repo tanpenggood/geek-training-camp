@@ -17,4 +17,11 @@ public interface MyApplicationInitializer {
      * @param servletContext
      */
     void onStartup(ServletContext servletContext) throws ServletException;
+
+    /**
+     * 应用销毁时做一些其他动作
+     */
+    default void onDestroyed() {
+    }
+
 }
