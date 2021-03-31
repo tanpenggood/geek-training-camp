@@ -24,6 +24,14 @@ my-reactive-message
 
 > 继续完善 my-rest-client POST 方法
 
+POST请求测试方法
+```
+my-rest-client
+|- src
+    |- test
+        |- com.itplh.rest.demo.RestClientDemo#testPostRequest
+```
+
 ## 作业三
 
 > (可选) 读一下 Servlet 3.0 关于 Servlet 异步
