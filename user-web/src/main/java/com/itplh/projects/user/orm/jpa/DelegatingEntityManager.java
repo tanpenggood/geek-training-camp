@@ -1,6 +1,6 @@
 package com.itplh.projects.user.orm.jpa;
 
-import com.itplh.web.context.ComponentContext;
+import com.itplh.web.context.JndiComponentContext;
 
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityGraph;
@@ -52,13 +52,13 @@ public class DelegatingEntityManager implements EntityManager {
             throw new RuntimeException(e);
         }
         // 增加 JNDI 引用处理
-        ComponentContext componentContext = ComponentContext.getInstance();
+        JndiComponentContext jndiComponentContext = JndiComponentContext.getInstance();
 
         for (String propertyName : properties.stringPropertyNames()) {
             String propertyValue = properties.getProperty(propertyName);
             if (propertyValue.startsWith("@")) {
                 String componentName = propertyValue.substring(1);
-                Object component = componentContext.getComponent(componentName);
+                Object component = jndiComponentContext.getComponent(componentName);
                 properties.put(propertyName, component);
             }
         }

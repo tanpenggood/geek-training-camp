@@ -1,7 +1,7 @@
 package com.itplh.web.mvc;
 
 import com.alibaba.fastjson.JSON;
-import com.itplh.web.context.ComponentContext;
+import com.itplh.web.context.JndiComponentContext;
 import com.itplh.web.mvc.controller.Controller;
 import com.itplh.web.mvc.controller.PageController;
 import com.itplh.web.mvc.controller.RestController;
@@ -86,7 +86,7 @@ public class FrontControllerServlet extends HttpServlet {
      * 利用 ServiceLoader 技术（Java SPI）
      */
     private void initHandleMethods() {
-        List<Controller> controllers = ComponentContext.getInstance().getComponents(Controller.class);
+        List<Controller> controllers = JndiComponentContext.getInstance().getComponents(Controller.class);
         for (Controller controller : controllers) {
             Class<?> controllerClass = controller.getClass();
             Path pathFromClass = controllerClass.getAnnotation(Path.class);
@@ -315,7 +315,7 @@ public class FrontControllerServlet extends HttpServlet {
      */
     private void beanValidatorIfNecessary(Parameter methodParam, Object entity) throws InvalidParameterException {
         if (methodParam.isAnnotationPresent(Valid.class)) {
-            Validator validator = Optional.ofNullable(ComponentContext.getInstance().getComponent("bean/Validator"))
+            Validator validator = Optional.ofNullable(JndiComponentContext.getInstance().getComponent("bean/Validator"))
                     .map(Validator.class::cast)
                     .orElseGet(() -> {
                         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();

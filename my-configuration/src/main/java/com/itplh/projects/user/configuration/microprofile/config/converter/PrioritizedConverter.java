@@ -2,6 +2,9 @@ package com.itplh.projects.user.configuration.microprofile.config.converter;
 
 import org.eclipse.microprofile.config.spi.Converter;
 
+/**
+ * 可设置优先级的Converter
+ */
 public class PrioritizedConverter<T> implements Converter<T>, Comparable<PrioritizedConverter<T>> {
 
     private final Converter<T> converter;

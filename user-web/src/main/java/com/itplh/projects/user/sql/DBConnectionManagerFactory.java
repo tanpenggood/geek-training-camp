@@ -1,6 +1,6 @@
 package com.itplh.projects.user.sql;
 
-import com.itplh.web.context.ComponentContext;
+import com.itplh.web.context.JndiComponentContext;
 
 /**
  * @author: tanpenggood
@@ -23,7 +23,7 @@ public class DBConnectionManagerFactory {
      * @return
      */
     public DBConnectionManager getDBConnectionManager() {
-        return ComponentContext.getInstance().getComponent(DBConnectionManager.class);
+        return JndiComponentContext.getInstance().getComponent(DBConnectionManager.class);
     }
 
 }

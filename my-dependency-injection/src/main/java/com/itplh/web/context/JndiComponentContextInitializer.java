@@ -8,21 +8,21 @@ import javax.servlet.ServletException;
 import java.util.logging.Logger;
 
 /**
- * {@link ComponentContext} 初始化器
+ * {@link JndiComponentContext} 初始化器
  *
  * @author: tanpenggood
  * @date: 2021-03-24 00:27
  */
 @Order(Integer.MIN_VALUE)
-public class ComponentContextInitializer implements MyApplicationInitializer {
+public class JndiComponentContextInitializer implements MyApplicationInitializer {
 
     private Logger logger = Logger.getLogger(this.getClass().getName());
 
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
-        logger.info("ComponentContextInitializer start.");
-        ComponentContext componentContext = new ComponentContext();
-        componentContext.init(servletContext);
-        logger.info("ComponentContextInitializer done.");
+        logger.info("JndiComponentContextInitializer start.");
+        JndiComponentContext jndiComponentContext = new JndiComponentContext();
+        jndiComponentContext.init(servletContext);
+        logger.info("JndiComponentContextInitializer done.");
     }
 }
