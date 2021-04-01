@@ -35,10 +35,24 @@ my-reactive-message
     my-rest-client
     |- src
         |- test
-            |- com.itplh.rest.demo.RestClientDemo#testGetRequest       测试同步GET请求
-            |- com.itplh.rest.demo.RestClientDemo#testAsyncGetRequest  测试异步GET请求
-            |- com.itplh.rest.demo.RestClientDemo#testPostRequest      测试同步POST请求
-            |- com.itplh.rest.demo.RestClientDemo#testAsyncPostRequest 测试异步POST请求
+            |- com.itplh.rest.demo.RestClientDemo#testGetRequest                 同步GET测试
+            |- com.itplh.rest.demo.RestClientDemo#testAsyncGetRequest            异步GET测试
+            |- com.itplh.rest.demo.RestClientDemo#testPostRequest                同步POST测试
+            |- com.itplh.rest.demo.RestClientDemo#testAsyncPostRequest           异步POST测试
+            |- com.itplh.rest.demo.RestClientDemo#testAsyncPostRequestConcurrent 异步POST并发测试
+    ```
+
+3. 实现源码
+
+    ```
+    my-rest-client
+    |- src
+        |- main
+            |- java
+                ｜- com.itplh.rest.client.AbstractInvocation
+                ｜- com.itplh.rest.client.HttpPostInvocation    发送GET请求
+                ｜- com.itplh.rest.client.HttpPostInvocation    发送POST请求
+                ｜- com.itplh.rest.core.MediaTypeHeaderDelegate 媒体类型请求头委派类（用于对 MediaType 进行转换）
     ```
 
 ## 作业三
