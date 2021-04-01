@@ -7,15 +7,15 @@ import org.junit.Test;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.Invocation;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
+import java.util.stream.IntStream;
 
 public class RestClientDemo {
 
@@ -54,60 +54,77 @@ public class RestClientDemo {
 
     @Test
     public void testPostRequest() {
-        List<Response> responses = new ArrayList<>(Arrays.asList(postRequest(), postRequest(), postRequest()));
+        List<Response> responses = new ArrayList<>();
+        responses.add(postRequest());
+        responses.add(postRequest(requestBody));
+        responses.add(postRequest());
         responses.stream()
                 .map(response -> response.readEntity(HashMap.class))
                 .forEach(System.out::println);
     }
 
     @Test
-    public void testAsyncPostRequest() throws Exception {
-        List<Future<Response>> futures = new ArrayList<>(Arrays.asList(asyncPostRequest(), asyncPostRequest(), asyncPostRequest()));
-        CountDownLatch countDownLatch = new CountDownLatch(futures.size());
-        while (countDownLatch.getCount() > 0) {
-            for (Future<Response> future : futures) {
-                if (future.isDone()) {
-                    countDownLatch.countDown();
-                    System.out.println(future.get().readEntity(HashMap.class));
-                }
-            }
-            TimeUnit.MILLISECONDS.sleep(200);
+    public void testAsyncPostRequest() {
+        List<CompletableFuture<Response>> postRequests = new ArrayList<>();
+        postRequests.add((CompletableFuture) asyncPostRequest());
+        postRequests.add((CompletableFuture) asyncPostRequest(requestBody));
+        postRequests.add((CompletableFuture) asyncPostRequest());
+        for (CompletableFuture<Response> postRequest : postRequests) {
+            postRequest.whenComplete((response, throwable) -> System.out.println(response.readEntity(HashMap.class)));
         }
-        countDownLatch.await();
+        CompletableFuture<Void> all = CompletableFuture.allOf(postRequests.toArray(new CompletableFuture[0]));
+        all.join();
+    }
+
+    @Test
+    public void testAsyncPostRequestConcurrent() {
+        int count = 20;
+        List<CompletableFuture<Response>> postRequests = new ArrayList<>();
+        IntStream.range(0, count / 2).forEach(i -> {
+            postRequests.add((CompletableFuture) asyncPostRequest());
+            postRequests.add((CompletableFuture) asyncPostRequest(requestBody));
+        });
+        for (CompletableFuture<Response> postRequest : postRequests) {
+            postRequest.whenComplete((response, throwable) -> System.out.println(response.readEntity(HashMap.class)));
+        }
+        CompletableFuture<Void> all = CompletableFuture.allOf(postRequests.toArray(new CompletableFuture[0]));
+        all.join();
     }
 
     private Response getRequest() {
-        Client client = ClientBuilder.newClient();
-        return client
-                .target(getUri) // WebTarget
-                .request() // Invocation.Builder
+        return builderRequest(getUri).get(); //  Response
+    }
+
+    private Future<Response> asyncGetRequest() {
+        return builderRequest(getUri)
+                .async() // AsyncInvoker
                 .get(); //  Response
     }
 
-    private Future<Response> asyncGetRequest() throws Exception {
-        Client client = ClientBuilder.newClient();
-        return client
-                .target(getUri) // WebTarget
-                .request() // Invocation.Builder
-                .async() // AsyncInvoker
-                .get(); //  Response
+    private Response postRequest(Map requestBody) {
+        return builderRequest(postUri)
+                .post(Entity.json(requestBody)); //  Response
     }
 
     private Response postRequest() {
-        Client client = ClientBuilder.newClient();
-        return client
-                .target(postUri) // WebTarget
-                .request() // Invocation.Builder
+        return postRequest(null);
+    }
+
+    private Future<Response> asyncPostRequest(Map requestBody) {
+        return builderRequest(postUri)
+                .async() // AsyncInvoker
                 .post(Entity.json(requestBody)); //  Response
     }
 
-    private Future<Response> asyncPostRequest() throws Exception {
+    private Future<Response> asyncPostRequest() {
+        return asyncPostRequest(null);
+    }
+
+    private Invocation.Builder builderRequest(String uri) {
         Client client = ClientBuilder.newClient();
         return client
-                .target(postUri) // WebTarget
-                .request() // Invocation.Builder
-                .async() // AsyncInvoker
-                .post(Entity.json(requestBody)); //  Response
+                .target(uri) // WebTarget
+                .request(); // Invocation.Builder
     }
 
 }
