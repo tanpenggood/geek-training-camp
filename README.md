@@ -1,10 +1,10 @@
 ## 作业导航
 
-第三周：https://gitee.com/tanpenggood/geek-training-camp/blob/master/docs/README-week3.md
+第五周：https://gitee.com/tanpenggood/geek-training-camp/blob/master/docs/README-week5.md
 
 第四周：https://gitee.com/tanpenggood/geek-training-camp/blob/master/docs/README-week4.md
 
-第五周：https://gitee.com/tanpenggood/geek-training-camp/blob/master/docs/README-week5.md
+第三周：https://gitee.com/tanpenggood/geek-training-camp/blob/master/docs/README-week3.md
 
 ## start up
 
@@ -28,6 +28,23 @@
     
     # 打包再启动（跳过测试编译及打包）
     mvn clean package -U -Dmaven.test.skip=true tomcat7:run
+    ```
+    
+    `service.sh`脚本
+    ```
+    cd geek-training-camp
+    
+    # 项目clean
+    ./service.sh clean
+    
+    # 项目package
+    ./service.sh package
+    
+    # 以war启动
+    ./service.sh war
+    
+    # 以jar启动
+    ./service.sh jar
     ```
 
 2. 启动时tomcat会输出 all access path.
