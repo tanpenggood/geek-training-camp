@@ -7,6 +7,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.regex.Pattern;
 
+import static com.itplh.serialize.Assert.assertEmpty;
+
 /**
  * @author: tanpenggood
  * @date: 2021-04-15 02:24
@@ -67,7 +69,7 @@ public class JavaSerializer extends AbstractSerializer {
     }
 
     private String converterToString(byte[] bytes) {
-        assertNull(bytes, "bytes must not be null or ''.");
+        assertEmpty(bytes, "bytes must not be null or [].");
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < bytes.length; i++) {
             builder.append(bytes[i]).append(",");

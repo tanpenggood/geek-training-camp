@@ -38,22 +38,4 @@ public abstract class AbstractSerializer {
         wrapperClassMapping.add(Character.class);
     }
 
-    protected final void assertNull(Object o, String message) {
-        if (o == null) {
-            throw new SerializeException(message);
-        }
-    }
-
-    protected final void assertEmpty(byte[] bytes, String message) {
-        if (bytes == null || bytes.length == 0) {
-            throw new SerializeException(message);
-        }
-    }
-
-    protected final void assertEmpty(String str, String message) {
-        if (str == null || str.length() == 0) {
-            throw new SerializeException(message);
-        }
-    }
-
 }

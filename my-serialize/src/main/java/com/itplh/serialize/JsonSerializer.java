@@ -9,6 +9,8 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import static com.itplh.serialize.Assert.assertNull;
+
 /**
  * @author: tanpenggood
  * @date: 2021-04-14 00:50
