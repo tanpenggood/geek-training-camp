@@ -23,8 +23,18 @@ public class JavaSerializerTest {
         // 反序列化
         Assert.assertEquals(user, javaSerializer.deserialize(userSerialize, User.class));
         Assert.assertEquals(userDetail, javaSerializer.deserialize(userDetailSerialize, UserDetail.class));
+        Assert.assertEquals(user, javaSerializer.deserialize(userSerialize, null));
+        Assert.assertEquals(userDetail, javaSerializer.deserialize(userDetailSerialize, null));
         Assert.assertEquals(null, javaSerializer.deserialize(null, String.class));
         Assert.assertThrows(SerializeException.class, () -> javaSerializer.deserialize("", String.class));
+
+        // 序列化-反序列化 基本类型
+        Assert.assertEquals(123, javaSerializer.deserialize(javaSerializer.serialize(123), int.class));
+        Assert.assertEquals(123D, javaSerializer.deserialize(javaSerializer.serialize(123D), double.class));
+        Assert.assertEquals(123L, javaSerializer.deserialize(javaSerializer.serialize(123L), long.class));
+        Assert.assertEquals(123F, javaSerializer.deserialize(javaSerializer.serialize(123F), float.class));
+        Assert.assertEquals(true, javaSerializer.deserialize(javaSerializer.serialize(true), boolean.class));
+        Assert.assertEquals('{', javaSerializer.deserialize(javaSerializer.serialize('{'), char.class));
     }
 
 }

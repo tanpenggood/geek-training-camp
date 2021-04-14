@@ -10,7 +10,7 @@ import java.util.function.Function;
  */
 public class Converter {
 
-    public static final Map<Class, Function> converterMap = new HashMap<>(32);
+    public static final Map<Class, Function> converterMap = new HashMap<>(64);
 
     static {
         converterMap.put(byte.class, s -> Byte.parseByte(s.toString()));

@@ -15,6 +15,13 @@ public class JavaSerializer extends AbstractSerializer {
 
     private Pattern deserializeStringPattern = Pattern.compile("[0-9|,|-]*");
 
+    /**
+     * 序列化基本类型时，因为该方法入参时Object，所以会进行自动装箱
+     *
+     * @param value
+     * @return
+     * @throws SerializeException
+     */
     @Override
     public String serialize(Object value) throws SerializeException {
         if (value == null) {
@@ -32,8 +39,14 @@ public class JavaSerializer extends AbstractSerializer {
         }
     }
 
+    /**
+     * @param value
+     * @param ignore Java反序列化的对象类型本身就是确定的，所以这里不需要指定转换的目标类型，调用API时请忽略该参数。
+     * @return
+     * @throws SerializeException
+     */
     @Override
-    public Object deserialize(String value, Class<?> targetClass) throws SerializeException {
+    public Object deserialize(String value, Class<?> ignore) throws SerializeException {
         if (value == null) {
             return null;
         }
@@ -47,13 +60,7 @@ public class JavaSerializer extends AbstractSerializer {
                 ByteArrayInputStream inputStream = new ByteArrayInputStream(converterToByteArray(value));
                 ObjectInputStream objectInputStream = new ObjectInputStream(inputStream)
         ) {
-            Object object = objectInputStream.readObject();
-            if (isStringClass(targetClass)
-                    || isWrapperClass(targetClass)
-                    || isPrimitiveClass(targetClass)) {
-                return Converter.converterMap.get(targetClass).apply(object);
-            }
-            return targetClass.cast(object);
+            return objectInputStream.readObject();
         } catch (Exception e) {
             throw new SerializeException(e);
         }
