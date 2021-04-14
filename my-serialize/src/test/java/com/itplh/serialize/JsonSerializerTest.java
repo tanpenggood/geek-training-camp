@@ -31,8 +31,8 @@ public class JsonSerializerTest {
         Assert.assertEquals(user, jsonSerializer.deserialize(jsonUser, User.class));
         Assert.assertEquals(userDetail, jsonSerializer.deserialize(jsonUserDetail, UserDetail.class));
         Assert.assertEquals("123", jsonSerializer.deserialize("123", String.class));
-        Assert.assertEquals("123", jsonSerializer.deserialize("123", int.class));
-        Assert.assertEquals("false", jsonSerializer.deserialize("false", Boolean.class));
+        Assert.assertEquals(123, jsonSerializer.deserialize("123", int.class));
+        Assert.assertEquals(false, jsonSerializer.deserialize("false", Boolean.class));
         Assert.assertEquals(null, jsonSerializer.deserialize(null, String.class));
         Assert.assertThrows(SerializeException.class, () -> jsonSerializer.deserialize("123", User.class));
     }

@@ -8,19 +8,19 @@ import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * @author: tanpenggood
  * @date: 2021-04-14 00:50
  */
-public class JsonSerializer {
+public class JsonSerializer extends AbstractSerializer {
 
+    @Override
     public String serialize(Object o) {
         return toJson(o);
     }
 
+    @Override
     public Object deserialize(String json, Class<?> targetClass) {
         return parseJson(json, targetClass);
     }
@@ -74,44 +74,13 @@ public class JsonSerializer {
         if (isStringClass(targetClass)
                 || isWrapperClass(targetClass)
                 || isPrimitiveClass(targetClass)) {
-            return json;
+            return Converter.converterMap.get(targetClass).apply(json);
         }
 
         if (json.startsWith("{") && json.endsWith("}")) {
             return JSON.parseObject(json, targetClass);
         } else {
             throw new SerializeException("do not deserialize to " + targetClass.getName());
-        }
-    }
-
-    private boolean isWrapperClass(Class<?> clazz) {
-        return wrapperClassMapping.contains(clazz);
-    }
-
-    private boolean isPrimitiveClass(Class<?> clazz) {
-        return clazz.isPrimitive();
-    }
-
-    private boolean isStringClass(Class<?> clazz) {
-        return String.class.equals(clazz);
-    }
-
-    private static Set<Class> wrapperClassMapping = new HashSet<>();
-
-    static {
-        wrapperClassMapping.add(Byte.class);
-        wrapperClassMapping.add(Short.class);
-        wrapperClassMapping.add(Integer.class);
-        wrapperClassMapping.add(Long.class);
-        wrapperClassMapping.add(Float.class);
-        wrapperClassMapping.add(Double.class);
-        wrapperClassMapping.add(Boolean.class);
-        wrapperClassMapping.add(Character.class);
-    }
-
-    private void assertNull(Object o, String message) {
-        if (o == null) {
-            throw new SerializeException(message);
         }
     }
 

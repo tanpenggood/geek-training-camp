@@ -1,12 +1,13 @@
 package com.itplh.serialize;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
  * @author: tanpenggood
  * @date: 2021-04-14 01:26
  */
-public class User {
+public class User implements Serializable {
 
     private boolean flag;
     private int age;
