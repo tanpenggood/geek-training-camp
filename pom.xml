@@ -15,6 +15,7 @@
         <module>my-initializer</module>
         <module>my-reactive-message</module>
         <module>my-rest-client</module>
+        <module>my-serialize</module>
     </modules>
     <packaging>pom</packaging>
     <name>geek-training-camp ${revision}</name>
