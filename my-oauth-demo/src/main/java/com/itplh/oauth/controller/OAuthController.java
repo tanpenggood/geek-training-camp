@@ -104,8 +104,14 @@ public class OAuthController {
      */
     @GetMapping("/{type}/callback")
     public String callback(@PathVariable("type") String type,
-                           @RequestParam("code") String code,
+                           @RequestParam(value = "code", required = false) String code,
+                           @RequestParam(value = "error", required = false) String error,
                            HttpSession session) throws IOException {
+        // access denied
+        if (Objects.nonNull(error)) {
+            return "redirect:" + LOGIN_URI;
+        }
+
         User user = null;
         String access_token = null;
         if (Objects.equals(ThirdType.GITEE.toString(), type.toUpperCase())) {
