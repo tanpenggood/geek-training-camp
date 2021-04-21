@@ -16,12 +16,15 @@
 </div>
 <hr>
 <div>
-    <form method="GET" action="/oauth/login">
-        <ul>
-            <#--<li>Github登录：<input type="submit" name="type" value="github" style="cursor: pointer;"/></li>-->
-            <li>Gitee登录：<input type="submit" name="type" value="gitee" style="cursor: pointer;"/></li>
-        </ul>
-    </form>
+    <div><b>第三方登录</b></div>
+    <ul>
+        <li>
+            <form method="GET" action="/oauth/login">
+                <input type="hidden" name="type" value="gitee"/>
+                <button type="submit" style="cursor: pointer;">Gitee登录</button>
+            </form>
+        </li>
+    </ul>
 </div>
 </body>
 </html>

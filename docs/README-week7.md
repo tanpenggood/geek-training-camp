@@ -22,11 +22,16 @@
                 |- java
                     ｜- com.itplh.oauth.OAuthApplication             启动类
                     ｜- com.itplh.oauth.controller.OAuthController   相关接口（登录/退出/OAuth登录）
-                    ｜- com.itplh.oauth.filter.OAuthFilter           资源控制过滤器
+                    ｜- com.itplh.oauth.filter.OAuthFilter           资源访问控制过滤器
+            |- resources
+                |- templates
+                    |- login.ftl                                     登录页
+                    |- index.ftl                                     用户首页
     ```
 
 3. 测试
 
     1. 启动项目 `com.itplh.oauth.OAuthApplication`
     2. 访问 http://localhost:8080
-    3. 点击`gitee`按钮，进行 Gitee OAuth 授权登录，成功进入到 http://localhost:8080/resource/index
+    3. 点击`Gitee登录`按钮，进行 Gitee OAuth 授权登录，成功进入到 http://localhost:8080/resource/index
+    4. 点击首页的`退出登录`按钮，并使用首页提供的`username`及`password`可实现账号密码登录
