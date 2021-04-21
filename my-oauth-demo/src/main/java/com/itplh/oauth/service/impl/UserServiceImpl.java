@@ -2,6 +2,8 @@ package com.itplh.oauth.service.impl;
 
 import cn.hutool.core.lang.Assert;
 import com.itplh.oauth.domain.GiteeUserInfo;
+import com.itplh.oauth.domain.ThirdType;
+import com.itplh.oauth.domain.ThirdUserInfo;
 import com.itplh.oauth.domain.User;
 import com.itplh.oauth.domain.UserLogin;
 import com.itplh.oauth.service.UserService;
@@ -26,7 +28,21 @@ public class UserServiceImpl implements UserService {
     private static final ConcurrentHashMap<String, GiteeUserInfo> giteeUsers = new ConcurrentHashMap<>();
 
     @Override
-    public User save(User user) {
+    public User login(UserLogin userLogin) {
+        Assert.notNull(userLogin);
+        Assert.notNull(userLogin.getUsername());
+        Assert.notNull(userLogin.getPassword());
+
+        User user = selectByUsername(userLogin.getUsername());
+        if (Objects.isNull(user)) {
+            return null;
+        }
+        boolean passwordEquals = user.getPassword().equals(userLogin.getPassword());
+        return passwordEquals ? user : null;
+    }
+
+    @Override
+    public User register(User user) {
         Assert.notNull(user);
         Assert.notNull(user.getThirdType());
         Assert.notNull(user.getThirdUserInfo());
@@ -34,7 +50,7 @@ public class UserServiceImpl implements UserService {
         switch (user.getThirdType()) {
             case GITEE:
                 GiteeUserInfo giteeUserInfo = (GiteeUserInfo) user.getThirdUserInfo();
-                giteeUsers.put(giteeUserInfo.getLogin(), giteeUserInfo);
+                saveForThirdPartUser(giteeUserInfo, user.getThirdType());
                 // unique
                 user.setUsername(user.getThirdType() + "_" + giteeUserInfo.getLogin());
                 user.setNickname(giteeUserInfo.getName());
@@ -45,7 +61,7 @@ public class UserServiceImpl implements UserService {
                 break;
         }
         // 已注册
-        User cacheUser = allUsers.get(user.getUsername());
+        User cacheUser = selectByUsername(user.getUsername());
         if (Objects.nonNull(cacheUser)) {
             return cacheUser;
         }
@@ -53,23 +69,47 @@ public class UserServiceImpl implements UserService {
         user.setId(System.currentTimeMillis());
         user.setPassword("123456");
         user.setCreated_at(new Date());
-        allUsers.put(user.getUsername(), user);
-        logger.info("allUsers {}", allUsers.size());
+        save(user);
+        logger.info("allUsers {}", count());
         return user;
     }
 
     @Override
-    public User login(UserLogin userLogin) {
-        Assert.notNull(userLogin);
-        Assert.notNull(userLogin.getUsername());
-        Assert.notNull(userLogin.getPassword());
+    public User save(User user) {
+        Assert.notNull(user);
+        Assert.notNull(user.getUsername());
 
-        User user = allUsers.get(userLogin.getUsername());
-        if (Objects.isNull(user)) {
-            return null;
+        allUsers.put(user.getUsername(), user);
+        return user;
+    }
+
+    @Override
+    public User selectByUsername(String username) {
+        Assert.notNull(username);
+        return allUsers.get(username);
+    }
+
+    @Override
+    public int count() {
+        return allUsers.size();
+    }
+
+    @Override
+    public ThirdUserInfo saveForThirdPartUser(ThirdUserInfo thirdUserInfo, ThirdType thirdType) {
+        Assert.notNull(thirdUserInfo);
+        Assert.notNull(thirdType);
+
+        switch (thirdType) {
+            case GITEE:
+                GiteeUserInfo giteeUserInfo = (GiteeUserInfo) thirdUserInfo;
+                giteeUsers.put(giteeUserInfo.getLogin(), giteeUserInfo);
+                break;
+            case GITHUB:
+                break;
+            default:
+                break;
         }
-        boolean passwordEquals = user.getPassword().equals(userLogin.getPassword());
-        return passwordEquals ? user : null;
+        return thirdUserInfo;
     }
 
 }

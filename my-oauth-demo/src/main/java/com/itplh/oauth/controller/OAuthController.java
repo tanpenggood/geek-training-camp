@@ -2,6 +2,7 @@ package com.itplh.oauth.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itplh.oauth.domain.GiteeUserInfo;
+import com.itplh.oauth.domain.OAuthResponseEntity;
 import com.itplh.oauth.domain.ThirdType;
 import com.itplh.oauth.domain.User;
 import com.itplh.oauth.domain.UserLogin;
@@ -113,17 +114,22 @@ public class OAuthController {
         }
 
         User user = null;
-        String access_token = null;
         if (Objects.equals(ThirdType.GITEE.toString(), type.toUpperCase())) {
-            access_token = giteeOAuthService.getAccessTokenEntity(code).getAccess_token();
-            String userInfoJson = giteeOAuthService.getUserInfo(access_token);
+            OAuthResponseEntity accessTokenEntity = giteeOAuthService.getAccessTokenEntity(code);
+            logger.info("accessTokenEntity {}", accessTokenEntity);
+            // if get access token fail
+            if (Objects.nonNull(accessTokenEntity.getError())) {
+                return "redirect:" + LOGIN_URI;
+            }
+            String userInfoJson = giteeOAuthService.getUserInfo(accessTokenEntity.getAccess_token());
             GiteeUserInfo giteeUserInfo = objectMapper.readValue(userInfoJson, GiteeUserInfo.class);
             logger.info("giteeUserInfo {}", giteeUserInfo);
             user = new User(giteeUserInfo, ThirdType.GITEE);
         } else {
             return "redirect:" + LOGIN_URI;
         }
-        user = userService.save(user);
+        // register and login
+        user = userService.register(user);
         logger.info("user {}", user);
         session.setAttribute(USER_TOKEN, UUID.randomUUID().toString());
         session.setAttribute(CURRENT_USER, user);

@@ -1,5 +1,7 @@
 package com.itplh.oauth.service;
 
+import com.itplh.oauth.domain.ThirdType;
+import com.itplh.oauth.domain.ThirdUserInfo;
 import com.itplh.oauth.domain.User;
 import com.itplh.oauth.domain.UserLogin;
 
@@ -9,7 +11,15 @@ import com.itplh.oauth.domain.UserLogin;
  */
 public interface UserService {
 
+    User login(UserLogin userLogin);
+
+    User register(User user);
+
     User save(User user);
 
-    User login(UserLogin userLogin);
+    User selectByUsername(String username);
+
+    int count();
+
+    ThirdUserInfo saveForThirdPartUser(ThirdUserInfo thirdUserInfo, ThirdType thirdType);
 }

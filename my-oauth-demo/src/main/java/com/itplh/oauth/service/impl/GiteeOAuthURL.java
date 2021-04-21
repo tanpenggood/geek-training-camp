@@ -15,7 +15,6 @@ public class GiteeOAuthURL implements BaseOAuthURL {
 
     private static final String REDIRECT_URI = "http://localhost:8080/gitee/callback";
 
-    // 1618953919
     @Override
     public String authorizeURL() {
         return "https://gitee.com/oauth/authorize?response_type=code&client_id=" + CLIENT_ID + "&redirect_uri=" + REDIRECT_URI;
