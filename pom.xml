@@ -17,6 +17,7 @@
         <module>my-rest-client</module>
         <module>my-serialize</module>
         <module>my-cache</module>
+        <module>my-oauth-demo</module>
     </modules>
     <packaging>pom</packaging>
     <name>geek-training-camp ${revision}</name>

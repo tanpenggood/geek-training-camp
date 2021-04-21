@@ -1,0 +1,7 @@
+spring:
+  #设定静态文件路径，js,css等
+  mvc:
+    static-path-pattern: /static/**
+  #设定ftl文件路径
+  freemarker:
+    template-loader-path: classpath:/templates
