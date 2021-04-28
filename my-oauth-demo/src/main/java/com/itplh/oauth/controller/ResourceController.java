@@ -17,9 +17,9 @@ public class ResourceController {
      *
      * @return
      */
-    @GetMapping("/index")
+    @GetMapping("/user")
     public String index() {
-        return "index";
+        return "user";
     }
 
 }

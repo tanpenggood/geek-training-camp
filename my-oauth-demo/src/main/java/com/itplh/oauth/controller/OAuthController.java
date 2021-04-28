@@ -33,7 +33,7 @@ public class OAuthController {
 
     public static final String USER_TOKEN = "USER_TOKEN";
     public static final String CURRENT_USER = "CURRENT_USER";
-    public static final String INDEX_URI = "http://localhost:8080/resource/index";
+    public static final String INDEX_URI = "http://localhost:8080/resource/user";
     public static final String LOGIN_URI = "http://localhost:8080/login";
 
     @Autowired
