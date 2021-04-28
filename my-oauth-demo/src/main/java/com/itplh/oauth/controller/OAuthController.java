@@ -12,6 +12,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,7 +39,7 @@ public class OAuthController {
     public static final String USER_TOKEN = "USER_TOKEN";
     public static final String CURRENT_USER = "CURRENT_USER";
     public static final String INDEX_URI = "http://localhost:8080/resource/user";
-    public static final String LOGIN_URI = "http://localhost:8080/login";
+    public static final String LOGIN_URI = "http://localhost:8080/login-page";
 
     @Autowired
     private GiteeOAuthService giteeOAuthService;
@@ -45,8 +50,11 @@ public class OAuthController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/login")
-    public String login() {
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @GetMapping("/login-page")
+    public String loginPage() {
         return "login";
     }
 
@@ -128,27 +136,22 @@ public class OAuthController {
         } else {
             return "redirect:" + LOGIN_URI;
         }
-        // register and login
+        // register
         user = userService.register(user);
         logger.info("user {}", user);
+        // security context login
+        String password = passwordEncoder.encode(user.getPassword());
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user.getUsername(), password,
+                AuthorityUtils.commaSeparatedStringToAuthorityList("admin"));
+        authentication.setDetails(new org.springframework.security.core.userdetails.User(user.getUsername(), password,
+                true, true, true, true,
+                AuthorityUtils.commaSeparatedStringToAuthorityList("admin")));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext());
+        // current user info
         session.setAttribute(USER_TOKEN, UUID.randomUUID().toString());
         session.setAttribute(CURRENT_USER, user);
         return "redirect:" + INDEX_URI;
     }
 
-    /**
-     * 退出
-     *
-     * @param session
-     * @param response
-     * @throws IOException
-     */
-    @GetMapping("/logout")
-    public void logout(HttpSession session, HttpServletResponse response) throws IOException {
-        session.removeAttribute(USER_TOKEN);
-        session.removeAttribute(CURRENT_USER);
-        response.sendRedirect(LOGIN_URI);
-    }
-
 }
-

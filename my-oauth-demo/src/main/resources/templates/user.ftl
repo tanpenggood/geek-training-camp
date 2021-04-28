@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Index</title>
+    <script src="/static/index.js"></script>
 </head>
 <body style="padding-top: 80px; display: flex; flex-direction: column;justify-content: center;align-items: center;">
 <ul>
