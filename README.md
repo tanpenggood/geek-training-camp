@@ -1,5 +1,11 @@
 ## 作业导航
 
+第十周：https://gitee.com/tanpenggood/geek-training-camp/blob/master/docs/README-week10.md
+
+第九周：https://gitee.com/tanpenggood/geek-training-camp/blob/master/docs/README-week9.md
+
+第八周：https://gitee.com/tanpenggood/geek-training-camp/blob/master/docs/README-week8.md
+
 第七周：https://gitee.com/tanpenggood/geek-training-camp/blob/master/docs/README-week7.md
 
 第六周：https://gitee.com/tanpenggood/geek-training-camp/blob/master/docs/README-week6.md
