@@ -19,11 +19,13 @@ public class ConsistentHashTest {
     private static final String IP_PREFIX = "192.168.0.";
 
     @Test
-    public void testConsistentHashLoadBalance() {
-        System.out.println("-----MD5HashAlgorithm");
-        testConsistentHashLoadBalance(new MD5HashAlgorithm(), 10, 500, 30000);
-        System.out.println("-----MurMurHashAlgorithm");
-        testConsistentHashLoadBalance(new MurMurHashAlgorithm(), 10, 500, 30000);
+    public void testMD5ConsistentHashUseMurMur() {
+        testConsistentHashLoadBalance(new MurMurHashAlgorithm(), 10, 500, 5000);
+    }
+
+    @Test
+    public void testConsistentHashUseMD5() {
+        testConsistentHashLoadBalance(new MD5HashAlgorithm(), 10, 500, 5000);
     }
 
     /**
