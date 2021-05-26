@@ -32,3 +32,35 @@
                     |- com.itplh.mybatis.EnableMyBatisTest#testSelectAll   测试查询全部
                     |- com.itplh.mybatis.EnableMyBatisTest#testSelectPage  测试分页查询
     ```
+
+## Usage
+
+> my-mybatis-spring-boot-starter 使用示例
+
+1. 引入依赖
+
+```xml
+<dependency>
+    <groupId>com.itplh.projects</groupId>
+    <artifactId>my-mybatis-spring-boot-starter</artifactId>
+    <version>v1-SNAPSHOT</version>
+</dependency>
+```
+
+2. 使用`@EnableMyBatis`注解
+
+```java
+@EnableMyBatis(
+        dataSource = "dataSource",
+        configLocation = "classpath:/mybatis/mybatis-config.xml",
+        mapperLocations = {"classpath:/mybatis/mapper/*.xml"},
+        environment = "development",
+        plugins = {"com.github.pagehelper.PageInterceptor"},
+        objectFactory = "com.itplh.mybatis.factory.MyObjectFactory",
+        typeAliasesPackage = "com.itplh.mybatis.domain"
+)
+@MapperScan("com.itplh.mybatis.mapper")
+@Configuration
+public class MybatisConfig {
+}
+```
