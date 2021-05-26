@@ -20,6 +20,7 @@
         <module>my-oauth-demo</module>
         <module>my-session</module>
         <module>consistent-hash</module>
+        <module>my-mybatis</module>
     </modules>
     <packaging>pom</packaging>
     <name>geek-training-camp ${revision}</name>

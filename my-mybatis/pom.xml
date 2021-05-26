@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>com.itplh.projects</groupId>
+        <artifactId>geek-training-camp</artifactId>
+        <version>${revision}</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>my-mybatis</artifactId>
+    <name>my-mybatis ${revision}</name>
+    <description>My Mybatis Framework ${revision}</description>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>my-mybatis-spring-boot-starter</module>
+        <module>my-mybatis-spring-boot-starter-demo</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.itplh.projects</groupId>
+                <artifactId>my-mybatis-spring-boot-starter</artifactId>
+                <version>${revision}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+</project>

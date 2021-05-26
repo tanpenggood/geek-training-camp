@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itplh.mybatis.mapper.UserMapper">
+
+    <sql id="fields">
+        id, name, password, email, phone_number AS phoneNumber
+    </sql>
+
+    <select id="selectById" parameterType="java.lang.Integer" resultType="User">
+        SELECT
+        <include refid="fields"/>
+        FROM user WHERE id=#{id}
+    </select>
+
+    <select id="selectAll" resultType="User">
+        SELECT
+        <include refid="fields"/>
+        FROM user
+    </select>
+</mapper>
