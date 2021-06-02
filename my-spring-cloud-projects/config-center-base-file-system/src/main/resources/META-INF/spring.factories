@@ -1,0 +1,1 @@
+org.springframework.cloud.bootstrap.BootstrapConfiguration=com.itplh.spring.cloud.config.client.locator.DefaultPropertiesPropertySourceLocator

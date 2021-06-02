@@ -1,0 +1,5 @@
+## 关闭remote configuration
+spring:
+  cloud:
+    config:
+      enabled: false

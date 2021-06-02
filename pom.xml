@@ -21,6 +21,7 @@
         <module>my-session</module>
         <module>consistent-hash</module>
         <module>my-mybatis</module>
+        <module>my-spring-cloud-projects</module>
     </modules>
     <packaging>pom</packaging>
     <name>geek-training-camp ${revision}</name>
@@ -53,7 +54,7 @@
         <hibernate.validator.version>5.1.0.Final</hibernate.validator.version>
         <jolokia.version>1.6.2</jolokia.version>
         <jolokia.client.version>1.6.2</jolokia.client.version>
-        <jackson.version>2.9.5</jackson.version>
+        <jackson.version>2.10.1</jackson.version>
         <activemq.version>5.9.1</activemq.version>
         <tomcat7.version>7.0.37</tomcat7.version>
         <lettuce.version>6.1.0.RELEASE</lettuce.version>
@@ -63,6 +64,7 @@
 
         <!-- Spring 依赖版本 -->
         <spring-boot.version>2.4.5</spring-boot.version>
+        <spring.cloud-version>2020.0.0</spring.cloud-version>
 
         <!-- Testing 版本 -->
         <junit.version>4.13</junit.version>
@@ -88,6 +90,15 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
                 <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- Spring Cloud Dependencies -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring.cloud-version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
