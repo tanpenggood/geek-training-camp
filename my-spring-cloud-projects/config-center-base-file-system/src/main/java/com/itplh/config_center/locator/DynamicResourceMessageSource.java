@@ -1,4 +1,4 @@
-package com.itplh.spring.cloud.config.client.locator;
+package com.itplh.config_center.locator;
 
 import com.sun.nio.file.SensitivityWatchEventModifier;
 import org.springframework.core.io.DefaultResourceLoader;

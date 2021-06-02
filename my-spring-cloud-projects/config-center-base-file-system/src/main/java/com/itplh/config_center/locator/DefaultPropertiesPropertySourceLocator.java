@@ -1,4 +1,4 @@
-package com.itplh.spring.cloud.config.client.locator;
+package com.itplh.config_center.locator;
 
 import org.springframework.cloud.bootstrap.config.PropertySourceLocator;
 import org.springframework.core.env.Environment;
