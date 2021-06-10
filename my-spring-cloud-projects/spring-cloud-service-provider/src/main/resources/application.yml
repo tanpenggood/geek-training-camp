@@ -1,0 +1,22 @@
+eureka:
+  client:
+    service-url:
+      defaultZone: 'http://127.0.0.1:12345/eureka'
+
+spring:
+  application:
+    name: spring-cloud-service-provider
+  redis:
+    host: localhost
+    port: 6379
+
+server:
+  port: 10000
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+demoData: 999

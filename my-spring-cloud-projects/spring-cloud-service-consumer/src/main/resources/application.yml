@@ -1,0 +1,11 @@
+eureka:
+  client:
+    service-url:
+      defaultZone: 'http://127.0.0.1:12345/eureka'
+
+spring:
+  application:
+    name: spring-cloud-service-consumer
+
+server:
+  port: 20000

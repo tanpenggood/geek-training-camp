@@ -16,7 +16,21 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>eureka-server</module>
         <module>config-center-base-file-system</module>
+        <module>my-redis-bus</module>
+        <module>spring-cloud-service-provider</module>
+        <module>spring-cloud-service-consumer</module>
     </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.itplh.projects</groupId>
+                <artifactId>my-redis-bus</artifactId>
+                <version>v1-SNAPSHOT</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
 </project>

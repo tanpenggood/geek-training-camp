@@ -1,0 +1,16 @@
+server:
+  port: 12345
+
+spring:
+  application:
+    name: eureka-server
+
+# 配置 Eureka Client（可参考 EurekaClientConfigBean）
+eureka:
+  client:
+    # 是否将自己注册到 Eureka-Server 中，默认true
+    # register-with-eureka: false
+    # 是否需要拉取服务信息，默认true
+    fetch-registry: false
+    service-url:
+      defaultZone: 'http://127.0.0.1:${server.port}/eureka'
