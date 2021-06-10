@@ -25,9 +25,4 @@ public class RedisBusConfig {
         return new RedisBusBridge(streamBridge, properties);
     }
 
-    @Bean
-    RedisPubSubListener redisPubSubListener() {
-        return new RedisPubSubListener();
-    }
-
 }

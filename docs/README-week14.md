@@ -46,7 +46,7 @@
         - 访问接口 http://localhost:20000/bus/redis/env?key=demoData
         - 返回值为 `未知`
     5. 请求 Provider 服务的 actuator 接口刷新配置（POST）
-        - `curl -X POST 'http://localhost:10000/actuator/busenv?name=demoData&value=888' -H 'content-type: application/json'
+        - `curl -X POST 'http://localhost:10000/actuator/busenv?name=demoData&value=888' -H 'content-type: application/json'`
     6. 再次访问 Provider 服务的接口
         - 访问接口 http://localhost:10000/bus/redis/env?key=demoData
         - 返回值为 `888`
