@@ -11,7 +11,9 @@
 > 目的:
 > 
 > 回顾 Spring 事件
+> 
 > 理解 Spring Cloud Bus 架构
+> 
 > 理解 Spring Cloud Stream
 
 1. 实现源码
