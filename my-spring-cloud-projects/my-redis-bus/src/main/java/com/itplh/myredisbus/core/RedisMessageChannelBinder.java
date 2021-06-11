@@ -19,7 +19,6 @@ public class RedisMessageChannelBinder implements Binder<MessageChannel, Consume
     @Override
     public Binding<MessageChannel> bindConsumer(String name, String group, MessageChannel inputChannel, ConsumerProperties consumerProperties) {
         logger.info("bindConsumer {} {} {}", name, group, inputChannel, consumerProperties);
-
         return () -> {
             logger.info("bindConsumer {} {} {}", name, group, inputChannel, consumerProperties);
         };
@@ -28,7 +27,6 @@ public class RedisMessageChannelBinder implements Binder<MessageChannel, Consume
     @Override
     public Binding<MessageChannel> bindProducer(String name, MessageChannel outputChannel, ProducerProperties producerProperties) {
         logger.info("bindProducer {} {} {}", name, outputChannel, producerProperties);
-
         return () -> {
             logger.info("bindProducer {} {} {}", name, outputChannel, producerProperties);
         };
