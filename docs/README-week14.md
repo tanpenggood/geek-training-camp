@@ -24,10 +24,9 @@
                     |- java
                         ｜- com.itplh.myredisbus.core.IConstant
                         ｜- com.itplh.myredisbus.core.RedisBusBridge                         BusBridge实现类
-                        ｜- com.itplh.myredisbus.core.RedisMessageChannelBinder              Binder实现类
+                        ｜- com.itplh.myredisbus.core.RedisBusBridgeSendAutoConfiguration    配置类-配置BusBridge#send到Redis的能力
                         ｜- com.itplh.myredisbus.core.RedisBusSubscribeReceiver              Redis Bus 消息接收器-处理消息并发送AckRemoteApplicationEvent
-                        ｜- com.itplh.myredisbus.core.RedisBusSendEventAutoConfiguration     配置类-配置BusBridge#send到Redis的能力
-                        ｜- com.itplh.myredisbus.core.RemoteApplicationEventRedisSerializer  对redis value 进行序列化与反序列化
+                        ｜- com.itplh.myredisbus.core.RemoteApplicationEventRedisSerializer  RedisValue序列化器-对RemoteApplicationEvent进行序列化/反序列化
                     |- resources
                         |- META-INF
                             ｜- spring.properties
