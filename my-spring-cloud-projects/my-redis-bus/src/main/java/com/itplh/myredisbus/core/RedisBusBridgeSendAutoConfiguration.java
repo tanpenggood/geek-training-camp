@@ -5,8 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.cloud.bus.BusProperties;
-import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -23,9 +21,9 @@ import static com.itplh.myredisbus.core.IConstant.BUS_REDIS_CHANNEL;
  */
 @Configuration
 @ConditionalOnClass(RedisConnectionFactory.class)
-public class RedisBusSendEventAutoConfiguration {
+public class RedisBusBridgeSendAutoConfiguration {
 
-    @Autowired(required = false)
+    @Autowired
     private RedisConnectionFactory redisConnectionFactory;
 
     @Autowired
@@ -56,15 +54,9 @@ public class RedisBusSendEventAutoConfiguration {
     }
 
     @Bean
-    @ConditionalOnMissingBean(RedisMessageChannelBinder.class)
-    RedisMessageChannelBinder redisMessageChannelBinder() {
-        return new RedisMessageChannelBinder();
-    }
-
-    @Bean
     @ConditionalOnMissingBean(RedisBusBridge.class)
-    RedisBusBridge busBridge(StreamBridge streamBridge, BusProperties properties) {
-        return new RedisBusBridge(streamBridge, properties, redisTemplate());
+    RedisBusBridge busBridge() {
+        return new RedisBusBridge(redisTemplate());
     }
 
 }

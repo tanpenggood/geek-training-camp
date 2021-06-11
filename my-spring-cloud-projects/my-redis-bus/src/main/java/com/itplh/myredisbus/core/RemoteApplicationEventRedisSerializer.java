@@ -11,7 +11,7 @@ import java.io.IOException;
 
 public class RemoteApplicationEventRedisSerializer implements RedisSerializer<RemoteApplicationEvent> {
 
-    private ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper;
 
     public RemoteApplicationEventRedisSerializer(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
