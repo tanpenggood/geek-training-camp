@@ -22,6 +22,7 @@
         <module>consistent-hash</module>
         <module>my-mybatis</module>
         <module>my-spring-cloud-projects</module>
+        <module>my-native</module>
     </modules>
     <packaging>pom</packaging>
     <name>geek-training-camp ${revision}</name>

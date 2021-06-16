@@ -1,0 +1,4 @@
+通过 GraalVM 将一个简单 Spring Boot 工程构建为 Native Image，要求:
+代码要自己手写 @Controller @RequestMapping("/helloworld")
+相关插件可以参考 Spring Native Samples
+(可选) 理解 Hint 注解的使用
