@@ -22,13 +22,12 @@
                     |- java
                         ｜- com.itplh.mynative.NativeDemoApplication
                     |- resources
-                        |- META-INF
-                            ｜- hello.txt
+                        ｜- hello.txt
     ```
 
 2. 测试（Mac OS）
 
-    1. 下载[native-demo-for-mac](https://gitee.com/tanpenggood/geek-training-camp/attach_files/740616/download/native-demo-for-mac)
+    1. 下载 [native-demo-for-mac](https://gitee.com/tanpenggood/geek-training-camp/attach_files/740616/download/native-demo-for-mac)
     
     2. 启动`native-demo-for-mac`
     
