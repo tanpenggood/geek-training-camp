@@ -33,7 +33,7 @@
     #安装native-iamge运行时依赖gcc等环境
     RUN yum -y install gcc glibc-devel zlib-devel libstdc++-static
     
-    #从gitee仓库下载spring-native demo项目
+    #从gitee拉取代码并构建native-image
     RUN yum -y install git
     WORKDIR /usr/local/
     RUN git clone https://gitee.com/tanpenggood/geek-training-camp.git
