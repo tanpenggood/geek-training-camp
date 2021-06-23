@@ -53,6 +53,7 @@
     WORKDIR /usr/local/geek-training-camp/my-native/native-demo
     RUN mvn -Pnative clean package -Dmaven.test.skip=true
     EXPOSE 8080
+    CMD /usr/local/geek-training-camp/my-native/native-demo/target/native-demo
     ```
 2. 测试
 
@@ -106,3 +107,24 @@
     3. 访问 http://localhost:8080/helloworld
         - 响应数据 `Hello, Spring Native.`
 
+
+## 离线安装包
+
+### Mac
+
+- GraalVM 
+    - https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-21.1.0/graalvm-ce-java11-darwin-amd64-21.1.0.tar.gz
+    
+- native-image 
+    - https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-21.1.0/native-image-installable-svm-java11-darwin-amd64-21.1.0.jar
+
+### Linux
+
+- GraalVM 
+    - https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-21.1.0/graalvm-ce-java11-linux-amd64-21.1.0.tar.gz
+
+- native-image 
+    - https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-21.1.0/native-image-installable-svm-java11-linux-amd64-21.1.0.jar
+
+- Maven 
+    - https://mirrors.tuna.tsinghua.edu.cn/apache/maven/maven-3/3.8.1/binaries/apache-maven-3.8.1-bin.tar.gz
